@@ -33,6 +33,12 @@ int main(int argc, char* argv[])
                 // STACK_DUMP(&stk, stk_err_status);
         if (curr_cmd_status == EXECUTION_SUCCESS)
             continue;
+        
+        else if (curr_cmd_status == MACHINE_STOP)
+        {
+            printf(GREEN "HLT emergency exit\n" RESET);
+            abort();
+        }
         // TODO: CMD_ERROR processing
     }
 

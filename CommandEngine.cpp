@@ -23,7 +23,8 @@ enum CMD_ERROR
     FILE_READ_FAILURE,
     COMMAND_NOT_EXIST,
     NO_ARG_FOR_PUSH,
-    EXTRA_ARGS
+    EXTRA_ARGS,
+    MACHINE_STOP
 };
 
 const char*     GetErrorString    (CMD_ERROR cmd_status);
@@ -39,6 +40,7 @@ const char* GetErrorString(CMD_ERROR cmd_status)
         case COMMAND_NOT_EXIST:     return "COMMAND_NOT_EXIST";
         case NO_ARG_FOR_PUSH:       return "NO_ARG_FOR_PUSH";
         case EXTRA_ARGS:            return "EXTRA_ARGS";
+        case MACHINE_STOP:          return "MACHINE_STOP";
         default:                    return "UNKNOWN_CMD_ERROR";
     }
 
@@ -62,7 +64,10 @@ CMD_ERROR ExecuteCommand(char* input_str, stack_t* stk, ERROR_STATUS* stk_err_st
 
     else if (read_args == 1)
     {   
-        if (command == OUT) // "OUT"
+        if (command == HLT)
+            return MACHINE_STOP;
+
+        else if (command == OUT) // "OUT"
         {
             printf("Last stack elem is <%lg>\n", StackPop(stk, stk_err_status));
             return EXECUTION_SUCCESS;
