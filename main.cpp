@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 {   
     if (argc != 2)
     {   
-        printf(RED "ERROR: two arguments required!\n"
+        printf(RED "ERROR: one argument required!\n"
                    "Fuck you! I need just one file name: the one I read from\n" RESET);
         return EXIT_FAILURE;
     }
@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
     for (int i = 0; i < CodeInfo.lines; i++)
     {
         curr_cmd_status = ExecuteCommand(CodeInfo.indexes[i], &stk, &stk_err_status);
+                // STACK_DUMP(&stk, stk_err_status);
         if (curr_cmd_status == EXECUTION_SUCCESS)
             continue;
         // TODO: CMD_ERROR processing
