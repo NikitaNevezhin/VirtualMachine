@@ -11,6 +11,8 @@
 #include <sys\stat.h>
 #include <errno.h>
 
+#include "UTILS/PrintColor.h"
+
 struct FileInfo
 {
     int lines;
@@ -128,7 +130,7 @@ void CreateFileInfo(FileInfo *file_info, const char* filename)
 
     if (file_info->buffer == NULL)
     {
-        printf("calloc returned NULL pointer in CreateFileInfo\n");
+        PRINT_RED("calloc returned NULL pointer in CreateFileInfo\n");
         abort();
     }
 
@@ -140,7 +142,7 @@ void CreateFileInfo(FileInfo *file_info, const char* filename)
 
     if (file_info->indexes == NULL)
     {
-        printf("calloc returned NULL pointer in CreateFileInfo\n");
+        PRINT_RED("calloc returned NULL pointer in CreateFileInfo\n");
         abort();
     }
 

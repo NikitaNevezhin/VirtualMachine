@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "FileTools.cpp"
-#include "Stack.cpp"
+#include "STACK/Stack.cpp"
 
 #include "CommandEngine.cpp"
 
@@ -10,8 +10,8 @@ int main(int argc, char* argv[])
 {   
     if (argc != 2)
     {   
-        printf(RED "ERROR: one argument required!\n"
-                   "Fuck you! I need just one file name: the one I read from\n" RESET);
+        PRINT_RED("ERROR: one argument required!\n"
+                   "Fuck you! I need just one file name: the one I read from\n");
         return EXIT_FAILURE;
     }
 
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
         
         else if (curr_cmd_status == MACHINE_STOP)
         {
-            printf(GREEN "HLT emergency exit\n" RESET);
+            PRINT_GREEN(GREEN "HLT emergency exit\n" RESET);
             abort();
         }
         // TODO: CMD_ERROR processing

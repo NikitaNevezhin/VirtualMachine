@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "FileTools.cpp"
-#include "Stack.cpp"
+#include "STACK/Stack.cpp"
 
 #define CMD_TOTAL_NUMBER 7
 

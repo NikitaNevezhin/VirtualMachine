@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "PrintColor.h"
+#include "UTILS/PrintColor.h"
 #include "FileTools.cpp"
 
 enum COMMAND_CODE
@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 {   
     if (argc != 3)
     {   
-        printf("ERROR: two arguments required!\n"
+        PRINT_RED("ERROR: two arguments required!\n"
                 "Fuck you! I need two file names: the one I read from and the one I write into.\n");
         return EXIT_FAILURE;
     }
@@ -81,7 +81,7 @@ void WriteByteCode(const char* input_file, const char* output_file)
 
         if (read_args == 0)
         {
-            printf("Failed at reading file %s:%d\n", input_file, i + 1);  // +1 as line numeration starts from 1, while i starts from 0
+            PRINT_RED("Failed at reading file %s:%d\n", input_file, i + 1);  // +1 as line numeration starts from 1, while i starts from 0
             fclose(ByteCode);
             abort();
         }
@@ -90,7 +90,7 @@ void WriteByteCode(const char* input_file, const char* output_file)
 
         if (command_code == UNKNOWN)
         {
-            printf("Could not read command from %s:%d\n", input_file, i + 1);  // +1 as line numeration starts from 1, while i starts from 0
+            PRINT_RED("Could not read command from %s:%d\n", input_file, i + 1);  // +1 as line numeration starts from 1, while i starts from 0
             fclose(ByteCode);
             abort();
         }
@@ -99,7 +99,7 @@ void WriteByteCode(const char* input_file, const char* output_file)
         {
             if (command_code == PUSH)
             {
-                printf("Command read failure in %s:%d -> PUSH requires argument\n", input_file, i + 1); // +1 as line numeration starts from 1, while i starts from 0
+                PRINT_RED("Command read failure in %s:%d -> PUSH requires argument\n", input_file, i + 1); // +1 as line numeration starts from 1, while i starts from 0
                 fclose(ByteCode);
                 abort();
             }
@@ -111,7 +111,7 @@ void WriteByteCode(const char* input_file, const char* output_file)
         {
             if (command_code != PUSH)
             {
-                printf("Command read failure in %s:%d -> command %s, %d has no arguments\n", input_file, i + 1, command, command_code); // +1 as line numeration starts from 1, while i starts from 0
+                PRINT_RED("Command read failure in %s:%d -> command %s, %d has no arguments\n", input_file, i + 1, command, command_code); // +1 as line numeration starts from 1, while i starts from 0
                 fclose(ByteCode);
                 abort();
             }
