@@ -28,6 +28,6 @@
 #define PRINT_LIGHT_BLUE(format, ...)       printf(LIGHT_BLUE  format RESET, ##__VA_ARGS__)
 #define PRINT_WHITE(format, ...)            printf(WHITE       format RESET, ##__VA_ARGS__)
 
-// ##__VA_ARGS__ gets away the comman in case __VA_ARGS__ is empty and everything works properly
+// ##__VA_ARGS__ gets away the comma in case __VA_ARGS__ is empty and everything works properly
 
 #endif

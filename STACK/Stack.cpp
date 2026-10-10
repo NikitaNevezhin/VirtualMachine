@@ -9,7 +9,7 @@
 #include <assert.h>
 #include <math.h>
 
-
+#include "../UTILS/PrintColor.h"
 #include "StackErrorProcessor.cpp"
 #include "ASSERT_STACK_OK.h"
 
@@ -130,13 +130,13 @@ void PrintStackData(stack_t* stk)  // this function is used in StackDump. Thats 
 {
     if (stk == NULL)
     {
-        printf(RED "Cannot print data from NULL stack\n" RESET);
+        PRINT_RED("Cannot print data from NULL stack\n");
         return;
     }
 
     else if (stk->data == NULL)
     {
-        printf(RED "    Stack data is NULL pointer\n" RESET);
+        PRINT_RED("    Stack data is NULL pointer\n");
         return;
     }
 
@@ -150,10 +150,10 @@ void PrintStackData(stack_t* stk)  // this function is used in StackDump. Thats 
         else
         {
             if (isnan((float)stk->data[i]))  // conversion to float to escape [-Wconversion] warning (isnan() converts its argument to float)
-                printf(RED "        [%d] = %lg [POIZON]\n" RESET, i, stk->data[i]);
+                PRINT_RED("        [%d] = %lg [POIZON]\n", i, stk->data[i]);
             
             else
-                printf(YELLOW "        [%d] = %lg [UNKNOWN]\n" RESET, i, stk->data[i]);
+                PRINT_YELLOW("        [%d] = %lg [UNKNOWN]\n", i, stk->data[i]);
         }
     }
 
@@ -167,7 +167,7 @@ void StackDump(stack_t* stk, ERROR_STATUS err_status, const char* file, int line
 
     if (err_status == STACK_NULL || stk == NULL) 
     {
-        printf(RED "Stack pointer is NULL!\n" RESET);
+        PRINT_RED("Stack pointer is NULL!\n");
         printf("-------------------------------------\n");
         return;
     }
