@@ -15,7 +15,7 @@
 #define ASSERT_STACK_OK(stk)                                                                    \
     do                                                                                          \
     {                                                                                           \
-        ERROR_STATUS stack_status = StackVerify(stk);                                           \
+        STK_ERR_STATUS stack_status = StackVerify(stk);                                           \
         if (stack_status != OKAY)                                                               \
         {                                                                                       \
             STACK_DUMP(stk, stack_status);                                                      \

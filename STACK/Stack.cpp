@@ -59,24 +59,24 @@ enum RESIZE_DIRECTIONS
 };
 
 
-void             StackInit        (stack_t* stk, int capacity, ERROR_STATUS* err_status ON_DEBUG(, const char* file, const char* name, int line));
+void             StackInit        (stack_t* stk, int capacity, STK_ERR_STATUS* err_status ON_DEBUG(, const char* file, const char* name, int line));
 
 void             PrintStackData   (stack_t* stk);
 
-void             StackDump        (stack_t* stk, ERROR_STATUS err_status, const char* file, int line, const char* func);
+void             StackDump        (stack_t* stk, STK_ERR_STATUS err_status, const char* file, int line, const char* func);
 
-ERROR_STATUS     StackVerify      (stack_t* stk);
+STK_ERR_STATUS   StackVerify      (stack_t* stk);
 
-void             StackResize      (stack_t* stk, ERROR_STATUS* err_status, int direction);
+void             StackResize      (stack_t* stk, STK_ERR_STATUS* err_status, int direction);
 
-void             StackPush        (stack_t* stk, stack_elem_t value, ERROR_STATUS* err_status);
+void             StackPush        (stack_t* stk, stack_elem_t value, STK_ERR_STATUS* err_status);
 
-stack_elem_t     StackPop         (stack_t* stk, ERROR_STATUS* err_status);
+stack_elem_t     StackPop         (stack_t* stk, STK_ERR_STATUS* err_status);
 
-void             StackDestroy     (stack_t* stk, ERROR_STATUS* err_status);
+void             StackDestroy     (stack_t* stk, STK_ERR_STATUS* err_status);
 
 
-void StackInit(stack_t* stk, int capacity, ERROR_STATUS* err_status ON_DEBUG(, const char* file, const char* name, int line))
+void StackInit(stack_t* stk, int capacity, STK_ERR_STATUS* err_status ON_DEBUG(, const char* file, const char* name, int line))
 {
     assert(stk);
 
@@ -166,7 +166,7 @@ void PrintStackData(stack_t* stk)  // this function is used in StackDump. Thats 
     printf("    }\n");
 }
 
-void StackDump(stack_t* stk, ERROR_STATUS err_status, const char* file, int line, const char* func)
+void StackDump(stack_t* stk, STK_ERR_STATUS err_status, const char* file, int line, const char* func)
 {   
     printf( "------------StackDump----------------\n");
     printf("StackDump was called in %s:%d in function %s\n", file, line, func);
@@ -211,7 +211,7 @@ void StackDump(stack_t* stk, ERROR_STATUS err_status, const char* file, int line
     printf("-------------------------------------\n");
 }
 
-ERROR_STATUS StackVerify(stack_t* stk)
+STK_ERR_STATUS StackVerify(stack_t* stk)
 {
     if (stk == NULL)
         return STACK_NULL;  // immediately return STACK_NULL as we cannot check anything below (bro, stack is NULL)
@@ -241,10 +241,10 @@ ERROR_STATUS StackVerify(stack_t* stk)
     if (stk->capacity > 0 && stk->size > stk->capacity)
         status |= STACK_OVERFLOW;
 
-    return (ERROR_STATUS)status;  // converting to ERROR_STATUS after working with int
+    return (STK_ERR_STATUS)status;  // converting to STK_ERR_STATUS after working with int
 }
 
-void StackResize(stack_t* stk,ERROR_STATUS* err_status, int direction)
+void StackResize(stack_t* stk,STK_ERR_STATUS* err_status, int direction)
 {
     ASSERT_STACK_OK(stk);
 
@@ -284,7 +284,7 @@ void StackResize(stack_t* stk,ERROR_STATUS* err_status, int direction)
     return;
 }
 
-void StackPush(stack_t* stk, stack_elem_t value, ERROR_STATUS* err_status)
+void StackPush(stack_t* stk, stack_elem_t value, STK_ERR_STATUS* err_status)
 {
     ASSERT_STACK_OK(stk);
 
@@ -302,7 +302,7 @@ void StackPush(stack_t* stk, stack_elem_t value, ERROR_STATUS* err_status)
     return;
 }
 
-stack_elem_t StackPop(stack_t* stk, ERROR_STATUS* err_status)
+stack_elem_t StackPop(stack_t* stk, STK_ERR_STATUS* err_status)
 {
     ASSERT_STACK_OK(stk);
     
@@ -327,7 +327,7 @@ stack_elem_t StackPop(stack_t* stk, ERROR_STATUS* err_status)
     return last_value;
 }
 
-void StackDestroy(stack_t* stk, ERROR_STATUS* err_status)
+void StackDestroy(stack_t* stk, STK_ERR_STATUS* err_status)
 {
     if (stk == NULL)
     {

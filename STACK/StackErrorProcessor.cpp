@@ -10,7 +10,7 @@
 
 #include "../UTILS/PrintColor.h"
 
-enum ERROR_STATUS
+enum STK_ERR_STATUS
 {
     OKAY = 0,
     CALLOC_FAILURE = 1,
@@ -24,16 +24,16 @@ enum ERROR_STATUS
     DATA_CANARY_CHANGED = 1 << 8
 };
 
-const char*     GetErrorString      (ERROR_STATUS err_status);
+const char*     GetErrorString      (STK_ERR_STATUS err_status);
 
-void            PrintError          (ERROR_STATUS err_status, ERROR_STATUS error, bool* first);
+void            PrintError          (STK_ERR_STATUS err_status, STK_ERR_STATUS error, bool* first);
 
-void            PrintAllErrors      (ERROR_STATUS err_status);
+void            PrintAllErrors      (STK_ERR_STATUS err_status);
 
-void            ProcessError        (ERROR_STATUS ErrorStatus);
+void            ProcessError        (STK_ERR_STATUS ErrorStatus);
 
 
-const char* GetErrorString(ERROR_STATUS err_status) 
+const char* GetErrorString(STK_ERR_STATUS err_status) 
 {
     switch (err_status) 
     {
@@ -61,7 +61,7 @@ const char* GetErrorString(ERROR_STATUS err_status)
     }
 }
 
-void PrintError(ERROR_STATUS err_status, ERROR_STATUS error, bool* first)  // PrintAllErrors helper function
+void PrintError(STK_ERR_STATUS err_status, STK_ERR_STATUS error, bool* first)  // PrintAllErrors helper function
 {
     if (err_status & error)
     {   
@@ -77,7 +77,7 @@ void PrintError(ERROR_STATUS err_status, ERROR_STATUS error, bool* first)  // Pr
     return;
 }
 
-void PrintAllErrors(ERROR_STATUS err_status)
+void PrintAllErrors(STK_ERR_STATUS err_status)
 {
     if (err_status == OKAY)
     {
@@ -99,7 +99,7 @@ void PrintAllErrors(ERROR_STATUS err_status)
 
 }
 
-void ProcessError(ERROR_STATUS err_status)
+void ProcessError(STK_ERR_STATUS err_status)
 {
     if (err_status == OKAY) return;
     if (err_status & STACK_NULL)            PRINT_RED("Error: Stack pointer is NULL\n");
