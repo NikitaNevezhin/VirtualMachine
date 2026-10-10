@@ -45,9 +45,9 @@
 
     #define PRINT_STACK_ELEM(value)    printf("%lg", value)
 
-        #define PRINT_DATA_CANARIES(left_canary, right_canary)                                                \
-                printf("        Left:  %lg (expected %lg)\n", left_canary, DATA_LEFT_CANARY);                 \
-                printf("        Right: %lg (expected %lg)\n", right_canary, DATA_RIGHT_CANARY);               \
+    #define PRINT_DATA_CANARIES(left_canary, right_canary)                                                \
+            printf("        Left:  %lg (expected %lg)\n", left_canary, DATA_LEFT_CANARY);                 \
+            printf("        Right: %lg (expected %lg)\n", right_canary, DATA_RIGHT_CANARY);               \
 
     #define CHECK_LEFT_CANARY(left_canary)      (FloatEqual(left_canary, DATA_LEFT_CANARY))
 
