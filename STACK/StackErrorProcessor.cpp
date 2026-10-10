@@ -111,6 +111,7 @@ void ProcessError(ERROR_STATUS err_status)
     if (err_status & NON_POSITIVE_CAPACITY) PRINT_RED("Error: Stack capacity is not positive\n");
     if (err_status & STRUCT_CANARY_CHANGED) PRINT_RED("Error: Struct canary value is changed.\n");
     if (err_status & DATA_CANARY_CHANGED)   PRINT_RED("Error: Stack data canary value is changed.\n");
+    abort();
 
     return;
 }

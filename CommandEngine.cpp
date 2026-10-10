@@ -54,10 +54,10 @@ CMD_ERROR ExecuteCommand(char* input_str, stack_t* stk, ERROR_STATUS* stk_err_st
     assert(stk_err_status);
 
     int read_args = 0;  // the amount of arguments found by sscanf in a line: 1 for ADD, SUB, MULT etc and 2 for PUSH, e.g., PUSH 20
-    double command_arg = 0; // the argument for the command (for PUSH)
+    stack_elem_t command_arg = 0; // the argument for the command (for PUSH)
     int command = 0;
 
-    read_args = sscanf(input_str, "%d %lg", &command, &command_arg);
+    read_args = sscanf(input_str, "%d %d", &command, &command_arg);
 
     if (read_args == 0) 
         return FILE_READ_FAILURE;
@@ -69,7 +69,7 @@ CMD_ERROR ExecuteCommand(char* input_str, stack_t* stk, ERROR_STATUS* stk_err_st
 
         else if (command == OUT) // "OUT"
         {
-            printf("Last stack elem is <%lg>\n", StackPop(stk, stk_err_status));
+            printf("Last stack elem is <%d>\n", StackPop(stk, stk_err_status));
             return EXECUTION_SUCCESS;
         }
 
@@ -79,9 +79,9 @@ CMD_ERROR ExecuteCommand(char* input_str, stack_t* stk, ERROR_STATUS* stk_err_st
         else if (command > CMD_TOTAL_NUMBER || command < 0)
             return COMMAND_NOT_EXIST;
 
-        double curr_elem = StackPop(stk, stk_err_status);
-        double prev_elem = StackPop(stk, stk_err_status);
-        double res = 0;
+        stack_elem_t curr_elem = StackPop(stk, stk_err_status);
+        stack_elem_t prev_elem = StackPop(stk, stk_err_status);
+        stack_elem_t res = 0;
 
         switch (command)
         {

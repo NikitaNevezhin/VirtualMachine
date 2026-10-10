@@ -29,6 +29,7 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < CodeInfo.lines; i++)
     {
+        // printf("Iteration <%d>:\n", i);
         curr_cmd_status = ExecuteCommand(CodeInfo.indexes[i], &stk, &stk_err_status);
                 // STACK_DUMP(&stk, stk_err_status);
         if (curr_cmd_status == EXECUTION_SUCCESS)

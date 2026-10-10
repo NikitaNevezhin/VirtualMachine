@@ -13,6 +13,8 @@
 #include "StackErrorProcessor.cpp"
 #include "ASSERT_STACK_OK.h"
 
+#include "ElemTypeConfig.h"
+
 #ifdef STACK_DEBUG
 
 #define ON_DEBUG(...) __VA_ARGS__
@@ -27,17 +29,10 @@
 
 #endif
 
-#define POIZON NAN
-
 #define STRUCT_LEFT_CANARY  0xDEDDEDDED
 #define STRUCT_RIGHT_CANARY 0xEDAEDAEDA
 
-#define DATA_LEFT_CANARY  1776.2076
-#define DATA_RIGHT_CANARY -2012.1231
-
 #define STACK_DUMP(stk, err_status) StackDump(stk, err_status, __FILE__, __LINE__, __func__)  
-
-typedef double stack_elem_t;
 
 struct stack_t 
 {
@@ -46,7 +41,6 @@ struct stack_t
     stack_elem_t* data;
     int size;
     int capacity;
-    ERROR_STATUS err_status;
 
     ON_DEBUG
     (
@@ -145,15 +139,27 @@ void PrintStackData(stack_t* stk)  // this function is used in StackDump. Thats 
     for (int i = 0; i < stk->capacity; i++)
     {
         if (i < stk->size)
-            printf(GREEN "       *[%d] = %lg\n" RESET, i, stk->data[i]);
+        {
+            printf(GREEN "       *[%d] = ", i);
+            PRINT_STACK_ELEM(stk->data[i]);
+            PRINT_GREEN("\n");
+        }
 
         else
         {
-            if (isnan((float)stk->data[i]))  // conversion to float to escape [-Wconversion] warning (isnan() converts its argument to float)
-                PRINT_RED("        [%d] = %lg [POIZON]\n", i, stk->data[i]);
+            if (IS_POIZON(stk->data[i]))
+            {
+                printf(RED "        [%d] = ", i);
+                PRINT_STACK_ELEM(stk->data[i]);
+                PRINT_RED(" [POIZON]\n");
+            }
             
             else
-                PRINT_YELLOW("        [%d] = %lg [UNKNOWN]\n", i, stk->data[i]);
+            {
+                PRINT_YELLOW("        [%d] = ", i, stk->data[i]);
+                PRINT_STACK_ELEM(stk->data[i]);
+                PRINT_YELLOW(" [UNKNOWN]\n");
+            }
         }
     }
 
@@ -195,8 +201,7 @@ void StackDump(stack_t* stk, ERROR_STATUS err_status, const char* file, int line
 
     if (stk->data != NULL)
     {
-        printf("        Left:  %lf (expected %lf)\n", stk->data[-1], DATA_LEFT_CANARY);
-        printf("        Right: %lf (expected %lf)\n", stk->data[stk->capacity], DATA_RIGHT_CANARY);
+        PRINT_DATA_CANARIES(stk->data[-1], stk->data[stk->capacity]);
     }
 
     else printf("       data is NULL, no canaries :( \n");
@@ -223,7 +228,7 @@ ERROR_STATUS StackVerify(stack_t* stk)
 
     else 
     {
-        if (!FloatEqual(stk->data[-1], DATA_LEFT_CANARY) || !FloatEqual(stk->data[stk->capacity], DATA_RIGHT_CANARY))
+        if (!CHECK_LEFT_CANARY(stk->data[-1]) || !CHECK_RIGHT_CANARY(stk->data[stk->capacity]))
             status |= DATA_CANARY_CHANGED;
     }
     
@@ -304,7 +309,7 @@ stack_elem_t StackPop(stack_t* stk, ERROR_STATUS* err_status)
     if (stk->size == 0)
     {
         *err_status = STACK_UNDERFLOW;
-        return NAN;
+        return POIZON;
     }
 
     stk->size--;
