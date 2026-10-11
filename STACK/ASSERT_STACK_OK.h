@@ -6,10 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "StackErrorProcessor.cpp"
-#include "Stack.cpp"
+#include "StackErrorProcessor.h"
+#include "Stack.h"
 #include "../UTILS/PrintColor.h"
-#include "../UTILS/FloatTools.cpp"
+#include "../UTILS/FloatTools.h"
 
     
 #define ASSERT_STACK_OK(stk)                                                                    \

@@ -6,7 +6,7 @@
 #include <math.h>
 #include <string.h>
 
-#include "..\UTILS\FloatTools.cpp"
+#include "..\UTILS\FloatTools.h"
 
 //------------------------USER!!!!! PLEASE, PLEASE WRITE type of elems in YOUR stack!!!!!----------------------------
 // write "#define STACK_INT" if you want to use int as stack_elem_t

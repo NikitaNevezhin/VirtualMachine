@@ -1,21 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
-#include "UTILS/PrintColor.h"
-#include "FileTools.cpp"
+#include "../UTILS/PrintColor.h"
+#include "../UTILS/FileTools.h"
+#include "../CPU/CommandCodes.h"
 
-enum COMMAND_CODE
-{   
-    UNKNOWN = -1,
-    PUSH = 1,
-    ADD = 2,
-    SUB = 3,
-    MULT = 4,
-    DIV = 5,
-    OUT = 6,
-    HLT = 7
-};
+// g++ ASM/disassembler.cpp CPU/ProcessorCommands.cpp CPU/ProcessorEngine.cpp CPU/ProcessorStruct.cpp STACK/Stack.cpp STACK/StackErrorProcessor.cpp UTILS/FloatTools.cpp UTILS/FileTools.cpp -o build/disassembler.exe -Wall -Wextra -Weffc++ -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-security -Wformat=2 -Wignored-qualifiers -Winit-self -Winline -Wlogical-op -Wmain -Wmissing-declarations -Wno-missing-field-initializers -Wmissing-include-dirs -Wnon-virtual-dtor -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wswitch-default -Wswitch-enum -Wtype-limits -Wundef -Wunreachable-code -Wwrite-strings -fexceptions -g -pipe -D_DEBUG -D_EJUDGE_CLIENT_SIDE -D_EJC -Wno-format -Wno-format-security
 
 const char*     GetCommandByCode        (COMMAND_CODE command_code);
 
@@ -47,7 +39,7 @@ const char* GetCommandByCode(COMMAND_CODE command_code)
         case PUSH:      return "PUSH";
         case ADD:       return "ADD";
         case SUB:       return "SUB";
-        case MULT:      return "MULT";
+        case MUL:       return "MUL";
         case DIV:       return "DIV";
         case OUT:       return "OUT";
         case HLT:       return "HLT";

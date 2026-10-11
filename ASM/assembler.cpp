@@ -1,21 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
-#include "UTILS/PrintColor.h"
-#include "FileTools.cpp"
+#include "../UTILS/PrintColor.h"
+#include "../UTILS/FileTools.h"
+#include "../CPU/CommandCodes.h"
 
-enum COMMAND_CODE
-{   
-    UNKNOWN = -1,
-    PUSH = 1,
-    ADD = 2,
-    SUB = 3,
-    MULT = 4,
-    DIV = 5,
-    OUT = 6,
-    HLT = 7
-};
+// g++ ASM/assembler.cpp CPU/ProcessorCommands.cpp CPU/ProcessorEngine.cpp CPU/ProcessorStruct.cpp STACK/Stack.cpp STACK/StackErrorProcessor.cpp UTILS/FloatTools.cpp UTILS/FileTools.cpp -o build/assembler.exe -Wall -Wextra -Weffc++ -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-security -Wformat=2 -Wignored-qualifiers -Winit-self -Winline -Wlogical-op -Wmain -Wmissing-declarations -Wno-missing-field-initializers -Wmissing-include-dirs -Wnon-virtual-dtor -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wswitch-default -Wswitch-enum -Wtype-limits -Wundef -Wunreachable-code -Wwrite-strings -fexceptions -g -pipe -D_DEBUG -D_EJUDGE_CLIENT_SIDE -D_EJC -Wno-format -Wno-format-security
 
 COMMAND_CODE    GetCodeByCommand    (char* command);
 
@@ -46,7 +38,7 @@ COMMAND_CODE GetCodeByCommand(char* command)
     if (strcmp(command, "PUSH") == 0)    return PUSH;
     if (strcmp(command, "ADD") == 0)     return ADD;
     if (strcmp(command, "SUB") == 0)     return SUB;
-    if (strcmp(command, "MULT") == 0)    return MULT;
+    if (strcmp(command, "MUL") == 0)     return MUL;
     if (strcmp(command, "DIV") == 0)     return DIV;
     if (strcmp(command, "OUT") == 0)     return OUT;
     if (strcmp(command, "HLT") == 0)     return HLT;

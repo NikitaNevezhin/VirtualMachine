@@ -11,34 +11,7 @@
 #include <sys\stat.h>
 #include <errno.h>
 
-#include "UTILS/PrintColor.h"
-#include  "STACK\stack.cpp"
-
-#include "ProcessorStruct.h"
-
-struct FileInfo
-{
-    int lines;
-    const char* filename;
-    int size;
-    char* buffer;
-    char** indexes;
-};
-
-int     StrCount            (char* string, char symb);
-
-int     GetFileSize         (const char* filename);
-
-int     ReadFromFile        (const char* filename, char destination[], int size);
-
-void    WriteDelimeter      (const char* filename);
-
-void    CreateFileInfo      (FileInfo *file_info, const char* filename);
-
-void    PrintFileInfo       (FileInfo *file_info);
-
-int     CreateCodeSegment   (Processor* processor, FileInfo *code_info);
-
+#include "FileTools.h"
 
 int StrCount(char* string, char symb)  // helper function for ReadFromFile
 {
@@ -168,35 +141,6 @@ void PrintFileInfo(FileInfo *file_info)
     printf("Lines in file: %d\n", file_info->lines);
 }
 
-int CreateCodeSegment(Processor* processor, FileInfo *code_info)
-{
-    // we have max 2 numbers in a single line. total_elems of code segment is less than lines * 2
-    int* code_segment = (int*)calloc(code_info->lines * 2, sizeof(int));
 
-    int read_args = 0;  // the amount of arguments found by sscanf in a line: 1 for ADD, SUB, MULT etc and 2 for PUSH, e.g., PUSH 20
-    stack_elem_t command_arg = 0; // the argument for the command (for PUSH)
-    int command = 0;
-
-    int ip = 0;  // instruction pointer
-
-    for (int i = 0; i < code_info->lines; i++)
-    {
-        read_args = sscanf(code_info->indexes[i], "%d %d", &command, &command_arg);
-
-        if (read_args == 0) 
-        {
-            PRINT_RED("Failed at reading %s:%d in %s\n", code_info->filename, i + 1, __func__);
-            abort();
-        }
-
-        code_segment[ip++] = command;
-        if (read_args == 2) code_segment[ip++] = command_arg;
-    }
-
-    processor->code_length = ip;
-    processor->code_segment = code_segment;
-
-    return 0;
-}
 
 #endif
