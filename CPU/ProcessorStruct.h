@@ -5,6 +5,14 @@
 #include "../STACK/Stack.h"
 #include "../UTILS/FileTools.h"
 
+enum REGISTER_CODE
+{
+    AX = 1,
+    BX = 2,
+    CX = 3,
+    DX = 4
+};
+
 struct Processor
 {
     stack_t stk;

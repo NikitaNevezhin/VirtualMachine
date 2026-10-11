@@ -12,6 +12,7 @@ const char* GetErrorString(CMD_STATUS cmd_status)
         case COMMAND_NOT_EXIST:     return "COMMAND_NOT_EXIST";
         case NO_ARG_FOR_PUSH:       return "NO_ARG_FOR_PUSH";
         case EXTRA_ARGS:            return "EXTRA_ARGS";
+        case UNKNOWN_REGISTER:      return "UNKNOWN_REGISTER";
         case MACHINE_STOP:          return "MACHINE_STOP";
         default:                    return "UNKNOWN_CMD_STATUS";
     }
@@ -35,6 +36,8 @@ CMD_STATUS RunCommand(Processor* processor)
         case DIV:       return ProcessorDIV(processor);
         case OUT:       return ProcessorOUT(processor);
         case HLT:       return ProcessorHLT();
+        case PUSHr:     return ProcessorPUSHr(processor);
+        case POPr:      return ProcessorPOPr(processor);
         default:        return COMMAND_NOT_EXIST;
     }
 
