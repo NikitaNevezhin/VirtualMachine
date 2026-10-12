@@ -6,6 +6,7 @@
 
 CMD_STATUS ProcessorPUSH(Processor* processor)
 {
+    assert(processor);
     PROCESSOR_STACK_PUSH(processor, processor->code_segment[processor->ip + 1]);
     processor->ip += 2;  // the next command after PUSH is situated after PUSH argument
     // STACK_DUMP(&processor->stk, processor->stk_err_status);
@@ -13,7 +14,8 @@ CMD_STATUS ProcessorPUSH(Processor* processor)
 }
 
 CMD_STATUS ProcessorADD(Processor* processor)
-{
+{   
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -28,6 +30,7 @@ CMD_STATUS ProcessorADD(Processor* processor)
 
 CMD_STATUS ProcessorSUB(Processor* processor)
 {
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -42,6 +45,7 @@ CMD_STATUS ProcessorSUB(Processor* processor)
 
 CMD_STATUS ProcessorMUL(Processor* processor)
 {
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -56,6 +60,7 @@ CMD_STATUS ProcessorMUL(Processor* processor)
 
 CMD_STATUS ProcessorDIV(Processor* processor)
 {
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -70,6 +75,7 @@ CMD_STATUS ProcessorDIV(Processor* processor)
 
 CMD_STATUS ProcessorOUT(Processor* processor)
 {
+    assert(processor);
     printf("Last stack elem is <%d>\n", PROCESSOR_STACK_POP(processor));
     ProcessError(processor->stk_err_status);
     processor->ip++;
@@ -83,6 +89,7 @@ CMD_STATUS ProcessorHLT()
 
 CMD_STATUS ProcessorPUSHr(Processor* processor)
 {   
+    assert(processor);
     stack_elem_t required_value = 0;
 
     REGISTER_CODE register_code = (REGISTER_CODE)processor->code_segment[processor->ip + 1];
@@ -109,6 +116,7 @@ CMD_STATUS ProcessorPUSHr(Processor* processor)
 
 CMD_STATUS ProcessorPOPr(Processor* processor)
 {   
+    assert(processor);
     // STACK_DUMP(&processor->stk, processor->stk_err_status);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);

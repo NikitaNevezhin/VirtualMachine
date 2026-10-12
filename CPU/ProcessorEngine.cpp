@@ -46,6 +46,7 @@ CMD_STATUS RunCommand(Processor* processor)
 
 int RunProcessor(Processor* processor)
 {
+    assert(processor);
     CMD_STATUS command_status = EXECUTION_SUCCESS;
     while (processor->ip <= processor->code_length)
     {

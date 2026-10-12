@@ -2,6 +2,8 @@
 
 int CreateCodeSegment(Processor* processor, FileInfo *code_info)
 {
+    assert(processor);
+    assert(code_info);
     // we have max 2 numbers in a single line. total_elems of code segment is less than lines * 2
     int* code_segment = (int*)calloc(code_info->lines * 2, sizeof(int));
 
@@ -33,6 +35,9 @@ int CreateCodeSegment(Processor* processor, FileInfo *code_info)
 
 int ProcessorInit(Processor* processor, const char* byte_code)
 {
+    assert(processor);
+    assert(byte_code);
+    
     FileInfo CodeInfo = {};
     CreateFileInfo(&CodeInfo, byte_code);
 
