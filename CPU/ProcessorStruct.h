@@ -28,8 +28,8 @@ struct Processor
     stack_elem_t dx;
 };
 
-int     ProcessorInit       (Processor* processor, const char* byte_code);
-
 int     CreateCodeSegment   (Processor* processor, FileInfo *code_info);
+
+int     ProcessorInit       (Processor* processor, const char* byte_code);
 
 #endif
