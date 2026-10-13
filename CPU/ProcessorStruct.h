@@ -5,6 +5,10 @@
 #include "../STACK/Stack.h"
 #include "../UTILS/FileTools.h"
 
+#define DEBUG_PROCESSOR_STACK
+
+#define PROCESSOR_DUMP(processor)     ProcessorDump(processor, __FILE__, __LINE__, __func__)
+
 enum REGISTER_CODE
 {   
     UNKNOWN_REG = -1,
@@ -32,5 +36,11 @@ struct Processor
 int     CreateCodeSegment   (Processor* processor, FileInfo *code_info);
 
 int     ProcessorInit       (Processor* processor, const char* byte_code);
+
+int     PrintRegisters      (Processor* processor);
+
+int     PrintCodeSegment    (Processor* processor);
+
+void    ProcessorDump       (Processor* processor, const char* file, int line, const char* func);
 
 #endif

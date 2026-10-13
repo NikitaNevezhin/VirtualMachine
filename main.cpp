@@ -20,6 +20,8 @@ int main(int argc, char* argv[])
 
     RunProcessor(&processor);
 
+    PROCESSOR_DUMP(&processor);
+
     return EXIT_SUCCESS;
 }
 

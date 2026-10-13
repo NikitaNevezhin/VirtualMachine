@@ -51,3 +51,63 @@ int ProcessorInit(Processor* processor, const char* byte_code)
     return 0;
 }
 
+int PrintRegisters(Processor* processor)  // ProcessorDump helper function
+{
+    printf("    ax = %d\n", processor->ax);
+    printf("    bx = %d\n", processor->bx);
+    printf("    cx = %d\n", processor->cx);
+    printf("    dx = %d\n", processor->dx);
+
+    return 0;
+}
+
+int PrintCodeSegment(Processor* processor)
+{
+    for (int i = 0; i < processor->code_length; i++)
+    {
+        if (i == processor->ip)
+            PRINT_GREEN("%3d", i);
+        else
+            printf("%3d", i);
+    }
+
+    printf("\n");
+
+    for (int i = 0; i < processor->code_length; i++)
+    {   
+        if (i == processor->ip)
+            PRINT_GREEN("%3d", processor->code_segment[i]);
+        else
+            printf("%3d", processor->code_segment[i]);
+    }
+
+    printf("\n");
+
+    return 0;
+}
+
+void ProcessorDump(Processor* processor, const char* file, int line, const char* func)
+{   
+    printf( "------------ProcessorDump----------------\n");
+    printf("ProcessorDump was called in %s:%d in function %s\n", file, line, func);
+
+    if (processor == NULL) 
+    {
+        PRINT_RED("Processor pointer is NULL!\n");
+        printf("-------------------------------------\n");
+        return;
+    }
+
+    #ifdef DEBUG_PROCESSOR_STACK
+    PRINT_GREEN("Processor stack info:\n");
+    STACK_DUMP(&processor->stk, processor->stk_err_status);
+    #endif
+
+    PRINT_GREEN("REGISTERS:\n");
+    PrintRegisters(processor);
+
+    PRINT_GREEN("CODE SEGMENT:\n");
+    PrintCodeSegment(processor);
+
+    printf("-------------------------------------\n");
+}
