@@ -43,4 +43,18 @@ CMD_STATUS      ProcessorPUSHr   (Processor* processor);
 
 CMD_STATUS      ProcessorPOPr    (Processor* processor);
 
+CMD_STATUS      ProcessorJMP     (Processor* processor);
+
+CMD_STATUS      ProcessorJA      (Processor* processor);
+
+CMD_STATUS      ProcessorJAE     (Processor* processor);
+
+CMD_STATUS      ProcessorJB      (Processor* processor);
+
+CMD_STATUS      ProcessorJBE     (Processor* processor);
+
+CMD_STATUS      ProcessorJE      (Processor* processor);
+
+CMD_STATUS      ProcessorJNE     (Processor* processor);
+
 #endif

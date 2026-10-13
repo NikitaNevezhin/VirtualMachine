@@ -13,7 +13,14 @@ enum COMMAND_CODE
     OUT = 6,
     HLT = 7,
     PUSHr = 8,
-    POPr = 9
+    POPr = 9,
+    JMP = 10,
+    JA = 11,
+    JAE = 12,
+    JB = 13,
+    JBE = 14,
+    JE = 15,
+    JNE = 16
 };
 
 #endif

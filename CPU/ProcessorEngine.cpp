@@ -38,6 +38,13 @@ CMD_STATUS RunCommand(Processor* processor)
         case HLT:       return ProcessorHLT();
         case PUSHr:     return ProcessorPUSHr(processor);
         case POPr:      return ProcessorPOPr(processor);
+        case JMP:       return ProcessorJMP(processor);
+        case JA:        return ProcessorJA(processor);
+        case JAE:       return ProcessorJAE(processor);
+        case JB:        return ProcessorJB(processor);
+        case JBE:       return ProcessorJBE(processor);
+        case JE:        return ProcessorJE(processor);
+        case JNE:       return ProcessorJNE(processor);
         default:        return COMMAND_NOT_EXIST;
     }
 

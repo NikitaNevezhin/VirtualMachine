@@ -6,7 +6,8 @@
 #include "../UTILS/FileTools.h"
 
 enum REGISTER_CODE
-{
+{   
+    UNKNOWN_REG = -1,
     AX = 1,
     BX = 2,
     CX = 3,

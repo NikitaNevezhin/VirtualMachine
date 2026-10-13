@@ -6,10 +6,13 @@
 #include "../UTILS/PrintColor.h"
 #include "../UTILS/FileTools.h"
 #include "../CPU/CommandCodes.h"
+#include "../CPU/ProcessorStruct.h"
 
 // g++ ASM/disassembler.cpp CPU/ProcessorCommands.cpp CPU/ProcessorEngine.cpp CPU/ProcessorStruct.cpp STACK/Stack.cpp STACK/StackErrorProcessor.cpp UTILS/FloatTools.cpp UTILS/FileTools.cpp -o build/disassembler.exe -Wall -Wextra -Weffc++ -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-security -Wformat=2 -Wignored-qualifiers -Winit-self -Winline -Wlogical-op -Wmain -Wmissing-declarations -Wno-missing-field-initializers -Wmissing-include-dirs -Wnon-virtual-dtor -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wswitch-default -Wswitch-enum -Wtype-limits -Wundef -Wunreachable-code -Wwrite-strings -fexceptions -g -pipe -D_DEBUG -D_EJUDGE_CLIENT_SIDE -D_EJC -Wno-format -Wno-format-security
 
 const char*     GetCommandByCode        (COMMAND_CODE command_code);
+
+const char*     GetNameByRegCode        (REGISTER_CODE reg_code);
 
 void            WriteASMcode            (const char* input_file, const char* output_file);
 
@@ -43,11 +46,37 @@ const char* GetCommandByCode(COMMAND_CODE command_code)
         case DIV:       return "DIV";
         case OUT:       return "OUT";
         case HLT:       return "HLT";
+        case PUSHr:     return "PUSHr";
+        case POPr:      return "POPr";
+        case JMP:       return "JMP";
+        case JA:        return "JA";
+        case JAE:       return "JAE";
+        case JB:        return "JB";
+        case JBE:       return "JBE";
+        case JE:        return "JE";
+        case JNE:       return "JNE";
         default:        return NULL;
     }
 }
 
-void WriteASMcode(const char* input_file, const char* output_file)
+const char* GetNameByRegCode(REGISTER_CODE reg_code)
+{
+    switch (reg_code)
+    {   
+        case UNKNOWN_REG:   return NULL;
+
+        case AX:            return "AX";
+        case BX:            return "BX";
+        case CX:            return "CX";
+        case DX:            return "DX";
+
+        default:            return NULL;
+    }
+
+    return NULL;
+}
+
+void WriteASMcode(const char* input_file, const char* output_file)  //FIXME: fix this fucking function: it's shit
 {
     assert(input_file);
     assert(output_file);
@@ -102,16 +131,31 @@ void WriteASMcode(const char* input_file, const char* output_file)
 
         else if (read_args == 2)
         {
-            if (strcmp(command, "PUSH")) // if command is not PUSH
+            switch (command_code)
             {
-                PRINT_RED("Command read failure in %s:%d -> command %s, %d has no arguments\n", 
-                    input_file, i + 1, command, command_code); // +1 as line numeration starts from 1, while i starts from 0
-                    
-                fclose(ASMcode);
-                abort();
+                case PUSH:
+                    fprintf(ASMcode, "%s %lg\n", command, command_arg);
+                    break;
+                case PUSHr:
+                case POPr:
+                {
+                    const char* reg_name = GetNameByRegCode((REGISTER_CODE)command_arg);
+                    fprintf(ASMcode, "%s %s\n", command, reg_name);
+                    break;
+                }
+                case JMP:
+                case JA:
+                case JAE:
+                case JB:
+                case JBE:
+                case JE:
+                case JNE:
+                {
+                    fprintf(ASMcode, "%s %lg\n", command, command_arg);
+                    break;
+                }
+                default: break;
             }
-
-            fprintf(ASMcode, "%s %lg\n", command, command_arg);
         }
     }
 
