@@ -66,7 +66,8 @@ int PrintCodeSegment(Processor* processor)
     for (int i = 0; i < processor->code_length; i++)
     {
         if (i == processor->ip)
-            PRINT_GREEN("%3d", i);
+            PRINT_YELLOW("%3d", i);
+            
         else
             printf("%3d", i);
     }
@@ -76,9 +77,14 @@ int PrintCodeSegment(Processor* processor)
     for (int i = 0; i < processor->code_length; i++)
     {   
         if (i == processor->ip)
+            PRINT_YELLOW("%3d", processor->code_segment[i]);
+
+        else if (i < processor->ip)
+
             PRINT_GREEN("%3d", processor->code_segment[i]);
-        else
-            printf("%3d", processor->code_segment[i]);
+
+        else 
+            PRINT_WHITE("%3d", processor->code_segment[i]);
     }
 
     printf("\n");

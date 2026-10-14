@@ -8,9 +8,8 @@
 #include "../CPU/CommandCodes.h"
 #include "../CPU/ProcessorStruct.h"
 
-// g++ ASM/disassembler.cpp CPU/ProcessorCommands.cpp CPU/ProcessorEngine.cpp CPU/ProcessorStruct.cpp STACK/Stack.cpp STACK/StackErrorProcessor.cpp UTILS/FloatTools.cpp UTILS/FileTools.cpp -o build/disassembler.exe -Wall -Wextra -Weffc++ -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-security -Wformat=2 -Wignored-qualifiers -Winit-self -Winline -Wlogical-op -Wmain -Wmissing-declarations -Wno-missing-field-initializers -Wmissing-include-dirs -Wnon-virtual-dtor -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wswitch-default -Wswitch-enum -Wtype-limits -Wundef -Wunreachable-code -Wwrite-strings -fexceptions -g -pipe -D_DEBUG -D_EJUDGE_CLIENT_SIDE -D_EJC -Wno-format -Wno-format-security
 
-const char*     GetCommandByCode        (COMMAND_CODE command_code);
+// g++ ASM/disassembler.cpp CPU/CommandCodes.cpp CPU/ProcessorCommands.cpp CPU/ProcessorEngine.cpp CPU/ProcessorStruct.cpp STACK/Stack.cpp STACK/StackErrorProcessor.cpp UTILS/FloatTools.cpp UTILS/FileTools.cpp -o build/disassembler.exe -Wall -Wextra -Weffc++ -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-security -Wformat=2 -Wignored-qualifiers -Winit-self -Winline -Wlogical-op -Wmain -Wmissing-declarations -Wno-missing-field-initializers -Wmissing-include-dirs -Wnon-virtual-dtor -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wswitch-default -Wswitch-enum -Wtype-limits -Wundef -Wunreachable-code -Wwrite-strings -fexceptions -g -pipe -D_DEBUG -D_EJUDGE_CLIENT_SIDE -D_EJC -Wno-format -Wno-format-security
 
 const char*     GetNameByRegCode        (REGISTER_CODE reg_code);
 
@@ -34,31 +33,6 @@ int main(int argc, char* argv[])
 }
 
 
-const char* GetCommandByCode(COMMAND_CODE command_code)
-{
-    switch (command_code)
-    {
-        case UNKNOWN:   return NULL;
-        case PUSH:      return "PUSH";
-        case ADD:       return "ADD";
-        case SUB:       return "SUB";
-        case MUL:       return "MUL";
-        case DIV:       return "DIV";
-        case OUT:       return "OUT";
-        case HLT:       return "HLT";
-        case PUSHr:     return "PUSHr";
-        case POPr:      return "POPr";
-        case JMP:       return "JMP";
-        case JA:        return "JA";
-        case JAE:       return "JAE";
-        case JB:        return "JB";
-        case JBE:       return "JBE";
-        case JE:        return "JE";
-        case JNE:       return "JNE";
-        default:        return NULL;
-    }
-}
-
 const char* GetNameByRegCode(REGISTER_CODE reg_code)
 {
     switch (reg_code)
@@ -76,7 +50,7 @@ const char* GetNameByRegCode(REGISTER_CODE reg_code)
     return NULL;
 }
 
-void WriteASMcode(const char* input_file, const char* output_file)  //FIXME: fix this fucking function: it's shit
+void WriteASMcode(const char* input_file, const char* output_file)
 {
     assert(input_file);
     assert(output_file);
@@ -84,10 +58,6 @@ void WriteASMcode(const char* input_file, const char* output_file)  //FIXME: fix
     FileInfo ByteCode = {};
 
     CreateFileInfo(&ByteCode, input_file);
-
-    int read_args = 0;  // the amount of arguments found by sscanf in a line: 1 for ADD, SUB, MULT etc and 2 for PUSH, e.g., PUSH 20
-    double command_arg = 0; // the argument for the command (for PUSH)
-    int command_code = UNKNOWN;  // COMMAND_CODE type has problems with sscanf %d
     
     FILE *ASMcode = fopen(output_file, "w");
 
@@ -97,67 +67,100 @@ void WriteASMcode(const char* input_file, const char* output_file)  //FIXME: fix
         abort();
     }
 
+    bool* needed_labels = (bool*)calloc(2 * ByteCode.lines + 1, sizeof(bool));
+    // -----------------------------------------------------
+    // FIRST iteration: looking for jumps to memorize labels
+    // -----------------------------------------------------
+
+    int curr_ip = 0;
     for (int i = 0; i < ByteCode.lines; i++)
     {
-        read_args = sscanf(ByteCode.indexes[i], "%d %lg", &command_code, &command_arg);
+        int command_code = UNKNOWN;
+        double command_arg = 0;
 
-        if (read_args == 0)
+        int read_res = sscanf(ByteCode.indexes[i], "%d %lg", &command_code, &command_arg);
+
+        if (read_res <= 0) continue;  // skip empty lines
+
+        if (command_code > UNKNOWN && command_code < CMD_TOTAL_NUMBER)
         {
-            PRINT_RED("Failed at reading file %s:%d\n", input_file, i + 1);  // +1 as line numeration starts from 1, while i starts from 0
-            fclose(ASMcode);
-            abort();
-        }
-
-        const char* command = GetCommandByCode((COMMAND_CODE)command_code);
-
-        if (command == NULL)
-        {
-            PRINT_RED("Could not read command from %s:%d\n", input_file, i + 1);  // +1 as line numeration starts from 1, while i starts from 0
-            fclose(ASMcode);
-            abort();
-        }
-
-        if (read_args == 1)
-        {
-            if (strcmp(command, "PUSH") == 0)
+            if (command_code >= JMP && command_code <= JNE && read_res == 2)
             {
-                PRINT_RED("Command read failure in %s:%d -> PUSH requires argument\n", input_file, i + 1); // +1 as line numeration starts from 1, while i starts from 0
-                fclose(ASMcode);
-                abort();
+                int target_ip = (int)command_arg;
+                if (target_ip >= 0 && target_ip < 2 * ByteCode.lines + 1)
+                {
+                    needed_labels[target_ip] = true;  // this ip needs a label in ASMcode.txt
+                }
             }
 
-            fprintf(ASMcode, "%s\n", command);
-        }
-
-        else if (read_args == 2)
-        {
-            switch (command_code)
-            {
-                case PUSH:
-                    fprintf(ASMcode, "%s %lg\n", command, command_arg);
-                    break;
-                case PUSHr:
-                case POPr:
-                {
-                    const char* reg_name = GetNameByRegCode((REGISTER_CODE)command_arg);
-                    fprintf(ASMcode, "%s %s\n", command, reg_name);
-                    break;
-                }
-                case JMP:
-                case JA:
-                case JAE:
-                case JB:
-                case JBE:
-                case JE:
-                case JNE:
-                {
-                    fprintf(ASMcode, "%s %lg\n", command, command_arg);
-                    break;
-                }
-                default: break;
-            }
+            curr_ip += 1 + OP_TABLE[command_code].arg_amount; // +1 for adding a function + the amount of arguments for the function
         }
     }
 
+    curr_ip = 0;
+    for (int i = 0; i < ByteCode.lines; i++)
+    {
+        int command_code = UNKNOWN;
+        double command_arg = 0;
+
+        int read_args = sscanf(ByteCode.indexes[i], "%d %lg", &command_code, &command_arg);
+        if (read_args <= 0) continue; // skip empty lines
+
+        if (command_code <= UNKNOWN || command_code >= CMD_TOTAL_NUMBER)
+        {
+            PRINT_RED("Could not read from %s:%d: invalid opcode %d\n", input_file, i + 1, command_code);
+            fclose(ASMcode);
+            abort();
+        }
+
+        const CommandInfo* cmd_info = &OP_TABLE[command_code];
+
+        if (curr_ip < 2 * ByteCode.lines + 1 && needed_labels[curr_ip]) // checks if we have label on this line
+        {
+            fprintf(ASMcode, ":%d\n", curr_ip);
+        }
+        // checking if command gets the required amount of arguments
+        int actual_args_in_file = read_args - 1;
+        if (actual_args_in_file != cmd_info->arg_amount)
+        {
+            PRINT_RED("Could not read from %s:%d -> Command %s expects %d arguments, but got %d\n", 
+                      input_file, i + 1, cmd_info->name, cmd_info->arg_amount, actual_args_in_file);
+            fclose(ASMcode);
+            abort();
+        }
+
+        if (cmd_info->arg_amount == 0)  // ADD, SUB, MUL, DIV, OUT, HLT
+        {
+            fprintf(ASMcode, "%s\n", cmd_info->name);
+        }
+
+        else
+        {
+            if (command_code == PUSHr || command_code == POPr)
+            {
+                const char* reg_name = GetNameByRegCode((REGISTER_CODE)command_arg);
+                if (reg_name == NULL)
+                {
+                    PRINT_RED("Could not read from %s:%d: invalid register code %d\n", 
+                              input_file, i + 1, (int)command_arg);
+                    fclose(ASMcode);
+                    abort();
+                }
+
+                fprintf(ASMcode, "%s %s\n", cmd_info->name, reg_name);
+            }
+            else  // PUSH and JMP family
+            {
+                if (command_code == PUSH)
+                    fprintf(ASMcode, "%s %lg\n", cmd_info->name, command_arg);
+                else
+                    fprintf(ASMcode, "%s :%lg\n", cmd_info->name, command_arg);
+            }
+        }
+
+        curr_ip += 1 + cmd_info->arg_amount;
+    }
+
+    free(needed_labels);
     fclose(ASMcode);
 }

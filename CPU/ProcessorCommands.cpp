@@ -82,8 +82,10 @@ CMD_STATUS ProcessorOUT(Processor* processor)
     return EXECUTION_SUCCESS; 
 }
 
-CMD_STATUS ProcessorHLT()
+CMD_STATUS ProcessorHLT(Processor* processor)
 {
+    processor->ip--;  // just to escape warning of unused parameter
+    processor->ip++;
     return MACHINE_STOP;
 }
 

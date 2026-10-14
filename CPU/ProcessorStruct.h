@@ -7,7 +7,7 @@
 
 #define DEBUG_PROCESSOR_STACK
 
-#define PROCESSOR_DUMP(processor)     ProcessorDump(processor, __FILE__, __LINE__, __func__)
+#define PROCESSOR_DUMP(processor)  ProcessorDump(processor, __FILE__, __LINE__, __func__)
 
 enum REGISTER_CODE
 {   

@@ -2,9 +2,13 @@
 
 #define COMMAND_CODES_H
 
+#define CMD_TOTAL_NUMBER 17  // including "UNKNOWN"
+
+#include "ProcessorStruct.h"
+
 enum COMMAND_CODE
 {
-    UNKNOWN = -1,
+    UNKNOWN = 0,
     PUSH = 1,
     ADD = 2,
     SUB = 3,
@@ -22,5 +26,27 @@ enum COMMAND_CODE
     JE = 15,
     JNE = 16
 };
+
+enum CMD_STATUS
+{
+    EXECUTION_SUCCESS,
+    COMMAND_NOT_EXIST,
+    NO_ARG_FOR_PUSH,
+    EXTRA_ARGS,
+    UNKNOWN_REGISTER,
+    MACHINE_STOP
+};
+
+typedef CMD_STATUS (*Command)(Processor*);
+
+struct CommandInfo
+{
+    COMMAND_CODE command_code;
+    const char* name;
+    Command command;
+    int arg_amount;
+};
+
+extern const CommandInfo OP_TABLE[CMD_TOTAL_NUMBER];
 
 #endif

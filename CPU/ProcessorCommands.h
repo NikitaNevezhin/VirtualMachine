@@ -9,21 +9,9 @@
 #include "ProcessorStruct.h"
 #include "CommandCodes.h"
 
-#define CMD_TOTAL_NUMBER 10  // including "UNKNOWN"
-
 #define PROCESSOR_STACK_PUSH(processor, value) StackPush(&processor->stk, value, &processor->stk_err_status) 
 
 #define PROCESSOR_STACK_POP(processor)         StackPop(&processor->stk, &processor->stk_err_status)            
-
-enum CMD_STATUS
-{
-    EXECUTION_SUCCESS,
-    COMMAND_NOT_EXIST,
-    NO_ARG_FOR_PUSH,
-    EXTRA_ARGS,
-    UNKNOWN_REGISTER,
-    MACHINE_STOP
-};
 
 CMD_STATUS      ProcessorPUSH    (Processor* processor);
 
@@ -37,7 +25,7 @@ CMD_STATUS      ProcessorDIV     (Processor* processor);
 
 CMD_STATUS      ProcessorOUT     (Processor* processor);
 
-CMD_STATUS      ProcessorHLT     ();
+CMD_STATUS      ProcessorHLT     (Processor* processor);
 
 CMD_STATUS      ProcessorPUSHr   (Processor* processor);
 

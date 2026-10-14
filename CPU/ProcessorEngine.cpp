@@ -26,29 +26,10 @@ CMD_STATUS RunCommand(Processor* processor)
 
     COMMAND_CODE curr_command = (COMMAND_CODE)processor->code_segment[processor->ip];  // cast to COMMAND_CODE as code_segment contains ints
 
-    switch(curr_command)
-    {
-        case UNKNOWN:   return COMMAND_NOT_EXIST;
-        case PUSH:      return ProcessorPUSH(processor);
-        case ADD:       return ProcessorADD(processor);
-        case SUB:       return ProcessorSUB(processor);
-        case MUL:       return ProcessorMUL(processor);
-        case DIV:       return ProcessorDIV(processor);
-        case OUT:       return ProcessorOUT(processor);
-        case HLT:       return ProcessorHLT();
-        case PUSHr:     return ProcessorPUSHr(processor);
-        case POPr:      return ProcessorPOPr(processor);
-        case JMP:       return ProcessorJMP(processor);
-        case JA:        return ProcessorJA(processor);
-        case JAE:       return ProcessorJAE(processor);
-        case JB:        return ProcessorJB(processor);
-        case JBE:       return ProcessorJBE(processor);
-        case JE:        return ProcessorJE(processor);
-        case JNE:       return ProcessorJNE(processor);
-        default:        return COMMAND_NOT_EXIST;
-    }
+    if (curr_command == UNKNOWN)
+        return COMMAND_NOT_EXIST;
 
-    return COMMAND_NOT_EXIST;
+   return OP_TABLE[curr_command].command(processor);
 }
 
 int RunProcessor(Processor* processor)
