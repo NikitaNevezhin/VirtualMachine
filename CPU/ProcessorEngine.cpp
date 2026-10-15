@@ -13,6 +13,7 @@ const char* GetErrorString(CMD_STATUS cmd_status)
         case NO_ARG_FOR_PUSH:       return "NO_ARG_FOR_PUSH";
         case EXTRA_ARGS:            return "EXTRA_ARGS";
         case UNKNOWN_REGISTER:      return "UNKNOWN_REGISTER";
+        case INVALID_INPUT:         return "INVALID_INPUT";
         case MACHINE_STOP:          return "MACHINE_STOP";
         default:                    return "UNKNOWN_CMD_STATUS";
     }

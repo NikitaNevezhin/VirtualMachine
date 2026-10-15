@@ -245,4 +245,25 @@ CMD_STATUS ProcessorJNE(Processor* processor)
     return EXECUTION_SUCCESS;
 }
 
+CMD_STATUS ProcessorIN(Processor* processor)
+{   
+    stack_elem_t input_value = POIZON;
+    printf("Processor asks for numeric value: ");
+    int read_res = SCANF_STACK_ELEM(&input_value);
+
+    // cleaning buffer from spaces and '\n'
+    while (getchar() != '\n')
+        ;
+
+    if (read_res == 0)
+        return INVALID_INPUT;
+
+    PROCESSOR_STACK_PUSH(processor, input_value);
+    ProcessError(processor->stk_err_status);
+
+    processor->ip++;
+
+    return EXECUTION_SUCCESS;
+}
+
 #endif

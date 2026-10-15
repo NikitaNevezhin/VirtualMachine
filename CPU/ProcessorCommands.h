@@ -45,4 +45,6 @@ CMD_STATUS      ProcessorJE      (Processor* processor);
 
 CMD_STATUS      ProcessorJNE     (Processor* processor);
 
+CMD_STATUS      ProcessorIN      (Processor* processor);
+
 #endif

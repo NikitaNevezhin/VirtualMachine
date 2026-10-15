@@ -116,4 +116,7 @@ void ProcessorDump(Processor* processor, const char* file, int line, const char*
     PrintCodeSegment(processor);
 
     printf("-------------------------------------\n");
+
+    PRINT_BLUE("MOVE TO NEXT STEP after current PROCESSOR_DUMP: ");
+    getchar();
 }

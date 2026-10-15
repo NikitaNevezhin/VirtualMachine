@@ -23,7 +23,8 @@
 
     #define IS_POIZON(value)  (value == POIZON)
 
-    #define PRINT_STACK_ELEM(elem)  printf("%d", elem)
+    #define PRINT_STACK_ELEM(elem)                  printf("%d", elem)
+    #define SCANF_STACK_ELEM(variable_address)      scanf("%d", variable_address)
 
     #define PRINT_DATA_CANARIES(left_canary, right_canary)                                                    \
                 printf("        Left:  %#X (expected %#X)\n", left_canary, DATA_LEFT_CANARY);                 \
@@ -43,7 +44,8 @@
     
     #define IS_POIZON(value)          (isnan(value))  // conversion to float to escape [-Wconversion] warning (isnan() converts its argument to float)
 
-    #define PRINT_STACK_ELEM(value)    printf("%lg", value)
+    #define PRINT_STACK_ELEM(value)                 printf("%lg", value)
+    #define SCANF_STACK_ELEM(variable_address)      scanf("%lg", variable_address)
 
     #define PRINT_DATA_CANARIES(left_canary, right_canary)                                                \
             printf("        Left:  %lg (expected %lg)\n", left_canary, DATA_LEFT_CANARY);                 \
