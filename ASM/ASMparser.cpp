@@ -58,7 +58,7 @@ bool ParseLabelDeclaration(const char* line, int curr_ip, int* labels)
 }
 
 void ParseJumpCallCommand(COMMAND_CODE command_code, char* line, char* command_name, 
-                      int* labels, FILE* ByteCode, int line_num)
+                      int* labels, FILE* ByteCode, int line_num, bool is_bin)
 {
     int jump_label = 0;
 
@@ -75,12 +75,19 @@ void ParseJumpCallCommand(COMMAND_CODE command_code, char* line, char* command_n
         fclose(ByteCode);
         abort();
     }
+    if (is_bin)
+    {
+        int bin_command_code = (int)command_code;
+        fwrite(&bin_command_code, sizeof(int), 1, ByteCode);  // writing one byte that shows it is the command
+        int jump_ip = labels[jump_label];
+        fwrite(&jump_ip, sizeof(int), 1, ByteCode);  // writing one byte that show the ip we jump to
+    }
 
-    fprintf(ByteCode, "%d %d\n", (int)command_code, labels[jump_label]);
+    else fprintf(ByteCode, "%d %d\n", (int)command_code, labels[jump_label]);
 }
 
 void ParseRegisterCommand(COMMAND_CODE command_code, char* line, char* command_name, 
-                          FILE* ByteCode, int line_num)
+                          FILE* ByteCode, int line_num, bool is_bin)
 {
     char reg_name[REG_NAME_LEN] = {};
     if (sscanf(line, "%*s %s", reg_name) != 1) 
@@ -98,42 +105,64 @@ void ParseRegisterCommand(COMMAND_CODE command_code, char* line, char* command_n
         abort();
     }
 
-    fprintf(ByteCode, "%d %d\n", command_code, (int)reg_code);
+    if (is_bin)
+    {
+        int bin_command_code = (int)command_code;
+        int bin_reg_code = (int)reg_code;
+        fwrite(&bin_command_code, sizeof(int), 1, ByteCode);
+        fwrite(&bin_reg_code, sizeof(int), 1, ByteCode);
+    }
+
+    else fprintf(ByteCode, "%d %d\n", command_code, (int)reg_code);
 }
 
 void ParseStandardCommand(COMMAND_CODE command_code, char* line, char* command_name, 
-                           FILE* ByteCode, int line_num) 
+                           FILE* ByteCode, int line_num, bool is_bin) 
 {
     int expected_args = OP_TABLE[command_code].arg_amount;
 
     if (expected_args == 0) 
     {
-        fprintf(ByteCode, "%d\n", command_code);
+        int bin_command_code = (int)command_code;
+        if (is_bin) fwrite(&bin_command_code, sizeof(int), 1, ByteCode);
+
+        else fprintf(ByteCode, "%d\n", command_code);
     } 
 
     else if (expected_args == 1)
     {
-        double command_arg = 0;
-        if (sscanf(line, "%*s %lg", &command_arg) != 1) 
+        int command_arg = 0;
+        if (sscanf(line, "%*s %d", &command_arg) != 1) 
         {
             PRINT_RED("Could not read from file at line %d: %s requires number argument\n", line_num, command_name);
             fclose(ByteCode);
             abort();
         }
 
-        fprintf(ByteCode, "%d %lg\n", command_code, command_arg);
+        if (is_bin)
+        {
+            int bin_command_code = (int)command_code;
+            fwrite(&bin_command_code, sizeof(int), 1, ByteCode);
+            fwrite(&command_arg, sizeof(int), 1, ByteCode);
+        }
+
+        else fprintf(ByteCode, "%d %d\n", command_code, command_arg);
     }
 }
 
-void WriteByteCode(const char* input_file, const char* output_file)
+void WriteByteCode(const char* input_file, const char* output_file, bool is_bin)
 {
     assert(input_file);
     assert(output_file);
 
     FileInfo ASMcode = {};
     CreateFileInfo(&ASMcode, input_file);
+    FILE* ByteCode = NULL;
 
-    FILE *ByteCode = fopen(output_file, "w");
+    if(is_bin)  ByteCode = fopen(output_file, "wb");  // open in binary mode
+    else        ByteCode = fopen(output_file, "w");
+
+
     if (ByteCode == NULL)
     {
         perror("ERROR: WriteByteCode -> fopen()");
@@ -193,12 +222,12 @@ void WriteByteCode(const char* input_file, const char* output_file)
         }
 
         if (command_code == PUSHr || command_code == POPr)
-            ParseRegisterCommand(command_code, curr_line, command_name, ByteCode, i + 1);
+            ParseRegisterCommand(command_code, curr_line, command_name, ByteCode, i + 1, is_bin);
         
         else if ((command_code >= JMP && command_code <= JNE) || command_code == CALL)
-            ParseJumpCallCommand(command_code, curr_line, command_name, labels, ByteCode, i + 1);
+            ParseJumpCallCommand(command_code, curr_line, command_name, labels, ByteCode, i + 1, is_bin);
 
         else 
-            ParseStandardCommand(command_code, curr_line, command_name, ByteCode, i + 1);
+            ParseStandardCommand(command_code, curr_line, command_name, ByteCode, i + 1, is_bin);
     }
 }

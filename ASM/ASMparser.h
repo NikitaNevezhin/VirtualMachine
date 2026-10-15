@@ -27,14 +27,14 @@ REGISTER_CODE   GetRegCodeByName        (char* reg_name);
 bool            ParseLabelDeclaration   (const char* line, int curr_ip, int* labels);
 
 void            ParseJumpCallCommand    (COMMAND_CODE command_code, char* line, char* command_name, 
-                                        int* labels, FILE* ByteCode, int line_num);
+                                        int* labels, FILE* ByteCode, int line_num, bool is_bin);
 
 void            ParseRegisterCommand    (COMMAND_CODE command_code, char* line, char* command_name, 
-                                         FILE* ByteCode, int line_num);
+                                         FILE* ByteCode, int line_num, bool is_bin);
 
 void            ParseStandardCommand    (COMMAND_CODE command_code, char* line, char* command_name, 
-                                         FILE* ByteCode, int line_num);                                         
+                                         FILE* ByteCode, int line_num, bool is_bin);                                         
 
-void            WriteByteCode           (const char* input_file, const char* output_file);
+void            WriteByteCode           (const char* input_file, const char* output_file, bool is_bin);
 
 #endif

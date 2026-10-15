@@ -33,15 +33,43 @@ int CreateCodeSegment(Processor* processor, FileInfo *code_info)
     return 0;
 }
 
-int ProcessorInit(Processor* processor, const char* byte_code)
+int LoadCodeSegment(Processor* processor, const char* bin_file_name)
 {
     assert(processor);
-    assert(byte_code);
-    
-    FileInfo CodeInfo = {};
-    CreateFileInfo(&CodeInfo, byte_code);
+    assert(bin_file_name);
 
-    CreateCodeSegment(processor, &CodeInfo);  // initializing code_length, code_segment
+    FILE* BinFile = fopen(bin_file_name, "rb");
+    if (BinFile == NULL)
+    {
+        perror("ERROR: LoadFromByteCode -> fopen()");
+        return 1;
+    }
+
+    processor->code_segment = (int*)calloc(MAX_CODE_SEGMENT_LEN, sizeof(int));
+
+    int read_elems = fread(processor->code_segment, sizeof(int), MAX_CODE_SEGMENT_LEN, BinFile);
+
+    if (read_elems <= 0)
+    {
+        printf("ERROR: Binary file could not be read (it might be empty)\n");
+        fclose(BinFile);
+        return 1;
+    }
+
+    fclose(BinFile);
+
+    processor->code_length = read_elems;
+    processor->ip = 0;
+
+    return 0;
+}
+
+int ProcessorInit(Processor* processor, const char* bin_byte_code)
+{
+    assert(processor);
+    assert(bin_byte_code);
+
+    LoadCodeSegment(processor, bin_byte_code);  // initializing code_length, code_segment
 
     STACK_INIT(&processor->stk, processor->code_length, &processor->stk_err_status);  // initializing stk
     STACK_INIT(&processor->call_stk, CALL_STK_MIN_SIZE, &processor->call_stk_err_status);

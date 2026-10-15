@@ -9,7 +9,8 @@
 
 #define PROCESSOR_DUMP(processor)  ProcessorDump(processor, __FILE__, __LINE__, __func__)
 
-#define CALL_STK_MIN_SIZE 5
+#define CALL_STK_MIN_SIZE    5
+#define MAX_CODE_SEGMENT_LEN 1024 * 1024
 
 enum REGISTER_CODE
 {   
@@ -38,7 +39,9 @@ struct Processor
     STK_ERR_STATUS call_stk_err_status;
 };
 
-int     CreateCodeSegment   (Processor* processor, FileInfo *code_info);
+int     CreateCodeSegment   (Processor* processor, FileInfo *code_info);   // creates code_segment from ByteCode.txt (NOT USED ANYMORE)
+
+int     LoadCodeSegment     (Processor* processor, const char* bin_file_name);  // creates code_segment from ByteCode.bin (IS CURRENTLY USED)
 
 int     ProcessorInit       (Processor* processor, const char* byte_code);
 
