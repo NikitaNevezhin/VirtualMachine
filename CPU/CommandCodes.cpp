@@ -34,6 +34,10 @@ extern CMD_STATUS      ProcessorJNE     (Processor* processor);
 
 extern CMD_STATUS      ProcessorIN      (Processor* processor);
 
+extern CMD_STATUS      ProcessorCALL    (Processor* processor);
+
+extern CMD_STATUS      ProcessorRET     (Processor* processor);
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // USER! GET THE FUCK OUT OF HERE!
 // DO NOT CHANGE THE ORDER OF COMMANDS IN OP_TABLE
@@ -59,5 +63,7 @@ const CommandInfo OP_TABLE[CMD_TOTAL_NUMBER] =
     {  JBE,     "JBE",      ProcessorJBE,  1},
     {   JE,      "JE",       ProcessorJE,  1},
     {  JNE,     "JNE",      ProcessorJNE,  1},
-    {   IN,     "IN",        ProcessorIN,  0}
+    {   IN,     "IN",        ProcessorIN,  0},
+    { CALL,   "CALL",      ProcessorCALL,  1},
+    {  RET,    "RET",       ProcessorRET,  0}
 };

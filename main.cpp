@@ -18,11 +18,11 @@ int main(int argc, char* argv[])
     Processor processor = {};
     ProcessorInit(&processor, byte_code);
 
-    PROCESSOR_DUMP(&processor);
-    PROCESSOR_DUMP(&processor);
+    // PROCESSOR_DUMP(&processor);
+    // PROCESSOR_DUMP(&processor);
     RunProcessor(&processor);
 
-    PROCESSOR_DUMP(&processor);
+    // PROCESSOR_DUMP(&processor);
 
     return EXIT_SUCCESS;
 }

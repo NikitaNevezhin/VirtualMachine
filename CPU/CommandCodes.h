@@ -2,7 +2,7 @@
 
 #define COMMAND_CODES_H
 
-#define CMD_TOTAL_NUMBER 18  // including "UNKNOWN"
+#define CMD_TOTAL_NUMBER 20  // including "UNKNOWN"
 
 #include "ProcessorStruct.h"
 
@@ -25,7 +25,9 @@ enum COMMAND_CODE
     JBE = 14,
     JE = 15,
     JNE = 16,
-    IN = 17
+    IN = 17,
+    CALL = 18,
+    RET = 19
 };
 
 enum CMD_STATUS

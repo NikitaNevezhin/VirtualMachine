@@ -1,5 +1,19 @@
 #include "ASMparser.h"
 
+void RemoveComments(char* line) 
+{
+    if (line == NULL) return;
+
+    char* comment_start = strchr(line, ';');
+    
+    if (comment_start != NULL) 
+    {
+        *comment_start = '\0';
+    }
+
+    return;
+}
+
 COMMAND_CODE GetCodeByCommand(const char* command_name)
 {
     assert(command_name);
@@ -43,7 +57,7 @@ bool ParseLabelDeclaration(const char* line, int curr_ip, int* labels)
     return false;
 }
 
-void ParseJumpCommand(COMMAND_CODE command_code, char* line, char* command_name, 
+void ParseJumpCallCommand(COMMAND_CODE command_code, char* line, char* command_name, 
                       int* labels, FILE* ByteCode, int line_num)
 {
     int jump_label = 0;
@@ -110,6 +124,7 @@ void ParseStandardCommand(COMMAND_CODE command_code, char* line, char* command_n
         fprintf(ByteCode, "%d %lg\n", command_code, command_arg);
     }
 }
+
 void WriteByteCode(const char* input_file, const char* output_file)
 {
     assert(input_file);
@@ -139,8 +154,9 @@ void WriteByteCode(const char* input_file, const char* output_file)
     for (int i = 0; i < ASMcode.lines; i++)
     {   
         char* curr_line = ASMcode.indexes[i];
+        RemoveComments(curr_line);
 
-        if (sscanf(ASMcode.indexes[i], "%s", command_name) == 0) continue;  // skip empty lines
+        if (sscanf(ASMcode.indexes[i], "%s", command_name) <= 0) continue;  // skip empty lines
 
         if (ParseLabelDeclaration(curr_line, curr_ip, labels)) continue;  // no increasing of ip - we found label
 
@@ -162,8 +178,9 @@ void WriteByteCode(const char* input_file, const char* output_file)
     for (int i = 0; i < ASMcode.lines; i++)
     {
         char* curr_line = ASMcode.indexes[i];
+        RemoveComments(curr_line);
 
-        if (sscanf(curr_line, "%s", command_name) == 0) continue; // skip empty lines
+        if (sscanf(curr_line, "%s", command_name) <= 0) continue; // skip empty lines (0 or EOF)
         if (command_name[0] == ':') continue;                     // skip if it is label
 
         COMMAND_CODE command_code = GetCodeByCommand(command_name);
@@ -178,8 +195,8 @@ void WriteByteCode(const char* input_file, const char* output_file)
         if (command_code == PUSHr || command_code == POPr)
             ParseRegisterCommand(command_code, curr_line, command_name, ByteCode, i + 1);
         
-        else if (command_code >= JMP && command_code <= JNE)
-            ParseJumpCommand(command_code, curr_line, command_name, labels, ByteCode, i + 1);
+        else if ((command_code >= JMP && command_code <= JNE) || command_code == CALL)
+            ParseJumpCallCommand(command_code, curr_line, command_name, labels, ByteCode, i + 1);
 
         else 
             ParseStandardCommand(command_code, curr_line, command_name, ByteCode, i + 1);

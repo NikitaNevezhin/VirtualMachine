@@ -44,6 +44,7 @@ int ProcessorInit(Processor* processor, const char* byte_code)
     CreateCodeSegment(processor, &CodeInfo);  // initializing code_length, code_segment
 
     STACK_INIT(&processor->stk, processor->code_length, &processor->stk_err_status);  // initializing stk
+    STACK_INIT(&processor->call_stk, CALL_STK_MIN_SIZE, &processor->call_stk_err_status);
     ProcessError(processor->stk_err_status);
 
     processor->ip = 0;  // ready to read first instruction of code_segment

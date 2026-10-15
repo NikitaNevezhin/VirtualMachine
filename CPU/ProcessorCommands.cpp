@@ -248,7 +248,7 @@ CMD_STATUS ProcessorJNE(Processor* processor)
 CMD_STATUS ProcessorIN(Processor* processor)
 {   
     stack_elem_t input_value = POIZON;
-    printf("Processor asks for numeric value: ");
+    PRINT_BLUE("Processor asks for numeric value: ");
     int read_res = SCANF_STACK_ELEM(&input_value);
 
     // cleaning buffer from spaces and '\n'
@@ -262,6 +262,29 @@ CMD_STATUS ProcessorIN(Processor* processor)
     ProcessError(processor->stk_err_status);
 
     processor->ip++;
+
+    return EXECUTION_SUCCESS;
+}
+
+CMD_STATUS ProcessorCALL(Processor* processor)
+{
+    processor->ip++;  // go to the argument
+    int function_label = processor->code_segment[processor->ip];
+
+    stack_elem_t ret_position = (stack_elem_t)(processor->ip + 1);
+    PROCESSOR_CALL_STK_PUSH(processor, ret_position);
+    ProcessError(processor->call_stk_err_status);
+
+    processor->ip = function_label;
+
+    return EXECUTION_SUCCESS;
+}
+
+CMD_STATUS ProcessorRET(Processor* processor)
+{
+    int ret_position = (int)PROCESSOR_CALL_STK_POP(processor);
+    ProcessError(processor->call_stk_err_status);
+    processor->ip = ret_position;
 
     return EXECUTION_SUCCESS;
 }

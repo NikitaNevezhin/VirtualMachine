@@ -9,6 +9,8 @@
 
 #define PROCESSOR_DUMP(processor)  ProcessorDump(processor, __FILE__, __LINE__, __func__)
 
+#define CALL_STK_MIN_SIZE 5
+
 enum REGISTER_CODE
 {   
     UNKNOWN_REG = -1,
@@ -31,6 +33,9 @@ struct Processor
     stack_elem_t bx;
     stack_elem_t cx;
     stack_elem_t dx;
+
+    stack_t call_stk;
+    STK_ERR_STATUS call_stk_err_status;
 };
 
 int     CreateCodeSegment   (Processor* processor, FileInfo *code_info);
