@@ -1,0 +1,28 @@
+IN          ; ask for n
+POPr AX
+PUSH 1      ; first elem of fibonacci seq
+PUSH 1      ; second elem of fibonacci seq
+CALL :1     ; calling fibonacci function
+OUT
+HLT
+; fibonacci function itself
+:1
+PUSHr AX
+PUSH 2
+JAE :2
+POPr BX
+POPr CX
+PUSHr BX
+PUSHr CX
+PUSHr BX
+ADD
+PUSHr AX
+PUSH 1
+SUB
+POPr AX
+PUSHr AX
+PUSH 0
+JNE :1
+RET
+:2          ; fibonacci case n = 1, n = 2
+RET
