@@ -1,5 +1,10 @@
 #include "ASMparser.h"
 
+// .\build/assembler.exe source/ASM_factorial.txt source/factorial.bin source/factorial.txt
+// .\build/assembler.exe source/ASM_fibonacci.txt source/fibonacci.bin source/fibonacci.txt
+// .\build/assembler.exe source/ASM_code.txt source/byte_code.bin source/byte_code.txt
+
+
 int main(int argc, char* argv[])
 {   
     if (argc != 4)

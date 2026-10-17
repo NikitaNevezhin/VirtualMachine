@@ -14,6 +14,7 @@ const char* GetErrorString(CMD_STATUS cmd_status)
         case EXTRA_ARGS:            return "EXTRA_ARGS";
         case UNKNOWN_REGISTER:      return "UNKNOWN_REGISTER";
         case INVALID_INPUT:         return "INVALID_INPUT";
+        case ZERO_DIVISION:         return "ZERO_DIVISION";
         case MACHINE_STOP:          return "MACHINE_STOP";
         default:                    return "UNKNOWN_CMD_STATUS";
     }
@@ -30,6 +31,10 @@ CMD_STATUS RunCommand(Processor* processor)
     if (curr_command == UNKNOWN)
         return COMMAND_NOT_EXIST;
 
+   #ifdef DUMP_EACH_STEP
+   PROCESSOR_DUMP(processor);
+   #endif
+   
    return OP_TABLE[curr_command].command(processor);
 }
 

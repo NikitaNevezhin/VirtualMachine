@@ -65,6 +65,9 @@ CMD_STATUS ProcessorDIV(Processor* processor)
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
+
+    if (curr_elem == 0)
+        return ZERO_DIVISION;
     
     stack_elem_t res = prev_elem / curr_elem;
     processor->ip++;
@@ -84,8 +87,7 @@ CMD_STATUS ProcessorOUT(Processor* processor)
 
 CMD_STATUS ProcessorHLT(Processor* processor)
 {
-    processor->ip--;  // just to escape warning of unused parameter
-    processor->ip++;
+    assert(processor);    // just to escape warning of unused parameter
     return MACHINE_STOP;
 }
 

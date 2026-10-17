@@ -7,6 +7,7 @@
 
 #define DEBUG_PROCESSOR_STACK
 
+// #define DUMP_EACH_STEP
 #define PROCESSOR_DUMP(processor)  ProcessorDump(processor, __FILE__, __LINE__, __func__)
 
 #define CALL_STK_MIN_SIZE    5

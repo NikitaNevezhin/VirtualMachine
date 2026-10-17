@@ -141,6 +141,4 @@ void PrintFileInfo(FileInfo *file_info)
     printf("Lines in file: %d\n", file_info->lines);
 }
 
-
-
 #endif

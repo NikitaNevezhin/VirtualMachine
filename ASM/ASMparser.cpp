@@ -207,7 +207,6 @@ void WriteByteCode(const char* input_file, const char* output_file, bool is_bin)
     for (int i = 0; i < ASMcode.lines; i++)
     {
         char* curr_line = ASMcode.indexes[i];
-        RemoveComments(curr_line);
 
         if (sscanf(curr_line, "%s", command_name) <= 0) continue; // skip empty lines (0 or EOF)
         if (command_name[0] == ':') continue;                     // skip if it is label
