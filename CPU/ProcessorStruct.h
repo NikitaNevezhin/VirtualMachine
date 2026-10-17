@@ -40,8 +40,6 @@ struct Processor
     STK_ERR_STATUS call_stk_err_status;
 };
 
-int     CreateCodeSegment   (Processor* processor, FileInfo *code_info);   // creates code_segment from ByteCode.txt (NOT USED ANYMORE)
-
 int     LoadCodeSegment     (Processor* processor, const char* bin_file_name);  // creates code_segment from ByteCode.bin (IS CURRENTLY USED)
 
 int     ProcessorInit       (Processor* processor, const char* byte_code);
