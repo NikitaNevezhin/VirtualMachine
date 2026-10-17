@@ -11,7 +11,8 @@
 #define PROCESSOR_DUMP(processor)  ProcessorDump(processor, __FILE__, __LINE__, __func__)
 
 #define CALL_STK_MIN_SIZE    5
-#define MAX_CODE_SEGMENT_LEN 1024 * 1024
+#define MAX_CODE_SEGMENT_LEN 1024 * 1024 // 1 MB
+#define REGISTERS_AMOUNT     4
 
 enum REGISTER_CODE
 {   
@@ -31,10 +32,7 @@ struct Processor
     int code_length;
     int ip;
 
-    stack_elem_t ax;
-    stack_elem_t bx;
-    stack_elem_t cx;
-    stack_elem_t dx;
+    stack_elem_t REGS[REGISTERS_AMOUNT];
 
     stack_t call_stk;
     STK_ERR_STATUS call_stk_err_status;

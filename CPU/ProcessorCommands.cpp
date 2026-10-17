@@ -96,23 +96,11 @@ CMD_STATUS ProcessorPUSHr(Processor* processor)
     assert(processor);
     stack_elem_t required_value = 0;
 
-    REGISTER_CODE register_code = (REGISTER_CODE)processor->code_segment[processor->ip + 1];
+    int register_code = processor->code_segment[processor->ip + 1];
 
-    switch (register_code)
-    {   
-        case UNKNOWN_REG:   return UNKNOWN_REGISTER;
+    if (register_code <= 0 || register_code > REGISTERS_AMOUNT)  return UNKNOWN_REGISTER;
 
-        case AX:            required_value = processor->ax;
-                            break;
-        case BX:            required_value = processor->bx;
-                            break;
-        case CX:            required_value = processor->cx;
-                            break;
-        case DX:            required_value = processor->dx;
-                            break;
-
-        default:            return UNKNOWN_REGISTER;
-    }
+    required_value = processor->REGS[register_code - 1];
 
     PROCESSOR_STACK_PUSH(processor, required_value);
     ProcessError(processor->stk_err_status);
@@ -128,23 +116,11 @@ CMD_STATUS ProcessorPOPr(Processor* processor)
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
 
-    REGISTER_CODE register_code = (REGISTER_CODE)processor->code_segment[processor->ip + 1];
+    int register_code = processor->code_segment[processor->ip + 1];
 
-    switch (register_code)
-    {   
-        case UNKNOWN_REG:   return UNKNOWN_REGISTER;
+    if (register_code <= 0 || register_code > REGISTERS_AMOUNT)  return UNKNOWN_REGISTER;
 
-        case AX:            processor->ax = curr_elem;
-                            break;
-        case BX:            processor->bx = curr_elem;
-                            break;
-        case CX:            processor->cx = curr_elem;
-                            break;
-        case DX:            processor->dx = curr_elem;
-                            break;
-
-        default:            return UNKNOWN_REGISTER;
-    }
+    processor->REGS[register_code - 1] = curr_elem;
     
     processor->ip += 2;
     return EXECUTION_SUCCESS;

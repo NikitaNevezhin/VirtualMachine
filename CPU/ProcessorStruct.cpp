@@ -42,6 +42,9 @@ int ProcessorInit(Processor* processor, const char* bin_byte_code)
     STACK_INIT(&processor->call_stk, CALL_STK_MIN_SIZE, &processor->call_stk_err_status);
     ProcessError(processor->stk_err_status);
 
+    for (int i = 0; i < REGISTERS_AMOUNT; i++)
+        processor->REGS[i] = POIZON;
+
     processor->ip = 0;  // ready to read first instruction of code_segment
 
     return 0;
@@ -49,10 +52,8 @@ int ProcessorInit(Processor* processor, const char* bin_byte_code)
 
 int PrintRegisters(Processor* processor)  // ProcessorDump helper function
 {
-    printf("    ax = %d\n", processor->ax);
-    printf("    bx = %d\n", processor->bx);
-    printf("    cx = %d\n", processor->cx);
-    printf("    dx = %d\n", processor->dx);
+    for (int i = 0; i < REGISTERS_AMOUNT; i++)
+        printf("%cx = %d\n", 'a' + i, processor->REGS[i]);
 
     return 0;
 }
