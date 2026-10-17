@@ -7,12 +7,13 @@
 
 #define DEBUG_PROCESSOR_STACK
 
-// #define DUMP_EACH_STEP
+#define DUMP_EACH_STEP
 #define PROCESSOR_DUMP(processor)  ProcessorDump(processor, __FILE__, __LINE__, __func__)
 
 #define CALL_STK_MIN_SIZE    5
 #define MAX_CODE_SEGMENT_LEN 1024 * 1024 // 1 MB
 #define REGISTERS_AMOUNT     4
+#define RAM_SIZE             20
 
 enum REGISTER_CODE
 {   
@@ -32,7 +33,8 @@ struct Processor
     int code_length;
     int ip;
 
-    stack_elem_t REGS[REGISTERS_AMOUNT];
+    stack_elem_t  REGS[REGISTERS_AMOUNT];
+    stack_elem_t* RAM;
 
     stack_t call_stk;
     STK_ERR_STATUS call_stk_err_status;
@@ -45,6 +47,8 @@ int     ProcessorInit       (Processor* processor, const char* byte_code);
 int     PrintRegisters      (Processor* processor);
 
 int     PrintCodeSegment    (Processor* processor);
+
+int     PrintRAM            (Processor* processor);
 
 void    ProcessorDump       (Processor* processor, const char* file, int line, const char* func);
 

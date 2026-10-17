@@ -2,7 +2,7 @@
 
 #define COMMAND_CODES_H
 
-#define CMD_TOTAL_NUMBER 20  // including "UNKNOWN"
+#define CMD_TOTAL_NUMBER 22  // including "UNKNOWN"
 
 #include "../UTILS/StrHash.h"
 #include "ProcessorStruct.h"
@@ -28,7 +28,9 @@ enum COMMAND_CODE
     JNE = 16,
     IN = 17,
     CALL = 18,
-    RET = 19
+    RET = 19,
+    PUSHM = 20,
+    POPM = 21
 };
 
 enum CMD_STATUS
@@ -40,6 +42,7 @@ enum CMD_STATUS
     UNKNOWN_REGISTER,
     INVALID_INPUT,
     ZERO_DIVISION,
+    RAM_INDEX_OUT_OF_RANGE,
     MACHINE_STOP
 };
 

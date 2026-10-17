@@ -34,7 +34,10 @@ void            ParseRegisterCommand    (COMMAND_CODE command_code, char* line, 
                                          FILE* ByteCode, int line_num, bool is_bin);
 
 void            ParseStandardCommand    (COMMAND_CODE command_code, char* line, char* command_name, 
-                                         FILE* ByteCode, int line_num, bool is_bin);                                         
+                                         FILE* ByteCode, int line_num, bool is_bin);
+                                         
+void            ParseRAMCommand         (COMMAND_CODE command_code, char* line, char* command_name,
+                                         FILE* ByteCode, int line_num, bool is_bin);
 
 void            WriteByteCode           (const char* input_file, const char* output_file, bool is_bin);
 

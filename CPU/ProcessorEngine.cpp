@@ -8,15 +8,16 @@ const char* GetErrorString(CMD_STATUS cmd_status)
 {
     switch (cmd_status)
     {
-        case EXECUTION_SUCCESS:     return "EXECUTION_SUCCESS";
-        case COMMAND_NOT_EXIST:     return "COMMAND_NOT_EXIST";
-        case NO_ARG_FOR_PUSH:       return "NO_ARG_FOR_PUSH";
-        case EXTRA_ARGS:            return "EXTRA_ARGS";
-        case UNKNOWN_REGISTER:      return "UNKNOWN_REGISTER";
-        case INVALID_INPUT:         return "INVALID_INPUT";
-        case ZERO_DIVISION:         return "ZERO_DIVISION";
-        case MACHINE_STOP:          return "MACHINE_STOP";
-        default:                    return "UNKNOWN_CMD_STATUS";
+        case EXECUTION_SUCCESS:         return "EXECUTION_SUCCESS";
+        case COMMAND_NOT_EXIST:         return "COMMAND_NOT_EXIST";
+        case NO_ARG_FOR_PUSH:           return "NO_ARG_FOR_PUSH";
+        case EXTRA_ARGS:                return "EXTRA_ARGS";
+        case UNKNOWN_REGISTER:          return "UNKNOWN_REGISTER";
+        case INVALID_INPUT:             return "INVALID_INPUT";
+        case ZERO_DIVISION:             return "ZERO_DIVISION";
+        case RAM_INDEX_OUT_OF_RANGE:    return "RAM_INDEX_OUT_OF_RANGE";
+        case MACHINE_STOP:              return "MACHINE_STOP";
+        default:                        return "UNKNOWN_CMD_STATUS";
     }
 
     return "UNKNOWN_CMD_STATUS";

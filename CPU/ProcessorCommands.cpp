@@ -267,4 +267,39 @@ CMD_STATUS ProcessorRET(Processor* processor)
     return EXECUTION_SUCCESS;
 }
 
+CMD_STATUS ProcessorPUSHM(Processor* processor)
+{   
+    assert(processor);
+    stack_elem_t RAM_value = 0;
+
+    int RAM_index = processor->code_segment[processor->ip + 1];
+
+    if (RAM_index < 0 || RAM_index > RAM_SIZE)  return RAM_INDEX_OUT_OF_RANGE;
+
+    RAM_value = processor->RAM[RAM_index];
+
+    PROCESSOR_STACK_PUSH(processor, RAM_value);
+    ProcessError(processor->stk_err_status);
+
+    processor->ip += 2;
+    return EXECUTION_SUCCESS;
+}
+
+CMD_STATUS ProcessorPOPM(Processor* processor)
+{   
+    assert(processor);
+    // STACK_DUMP(&processor->stk, processor->stk_err_status);
+    stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
+    ProcessError(processor->stk_err_status);
+
+    int RAM_index = processor->code_segment[processor->ip + 1];
+
+    if (RAM_index < 0 || RAM_index > RAM_SIZE)  return RAM_INDEX_OUT_OF_RANGE;
+
+    processor->RAM[RAM_index] = curr_elem;    
+    
+    processor->ip += 2;
+    return EXECUTION_SUCCESS;
+}
+
 #endif

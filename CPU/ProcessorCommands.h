@@ -55,4 +55,8 @@ CMD_STATUS      ProcessorCALL    (Processor* processor);
 
 CMD_STATUS      ProcessorRET     (Processor* processor);
 
+CMD_STATUS      ProcessorPUSHM   (Processor* processor);
+
+CMD_STATUS      ProcessorPOPM    (Processor* processor);
+
 #endif

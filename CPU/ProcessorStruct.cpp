@@ -45,6 +45,13 @@ int ProcessorInit(Processor* processor, const char* bin_byte_code)
     for (int i = 0; i < REGISTERS_AMOUNT; i++)
         processor->REGS[i] = POIZON;
 
+    stack_elem_t* temp_RAM_ptr = (stack_elem_t*)calloc(RAM_SIZE, sizeof(stack_elem_t));
+
+    if (temp_RAM_ptr == NULL)
+        return 1;
+
+    processor->RAM = temp_RAM_ptr;
+
     processor->ip = 0;  // ready to read first instruction of code_segment
 
     return 0;
@@ -89,6 +96,15 @@ int PrintCodeSegment(Processor* processor)
     return 0;
 }
 
+int PrintRAM(Processor* processor)
+{
+    for (int i = 0; i < RAM_SIZE; i++)
+        PRINT_WHITE("%d ", processor->RAM[i]);
+    printf("\n");
+    
+    return 0;
+}
+
 void ProcessorDump(Processor* processor, const char* file, int line, const char* func)
 {   
     printf( "------------ProcessorDump----------------\n");
@@ -111,6 +127,9 @@ void ProcessorDump(Processor* processor, const char* file, int line, const char*
 
     PRINT_GREEN("CODE SEGMENT:\n");
     PrintCodeSegment(processor);
+
+    PRINT_GREEN("RAM:\n");
+    PrintRAM(processor);
 
     printf("-------------------------------------\n");
 
