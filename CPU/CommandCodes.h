@@ -4,6 +4,7 @@
 
 #define CMD_TOTAL_NUMBER 20  // including "UNKNOWN"
 
+#include "../UTILS/StrHash.h"
 #include "ProcessorStruct.h"
 
 enum COMMAND_CODE
@@ -48,6 +49,7 @@ struct CommandInfo
 {
     COMMAND_CODE command_code;
     const char* name;
+    long long name_hash;
     Command command;
     int arg_amount;
 };

@@ -17,14 +17,17 @@ void RemoveComments(char* line)
 COMMAND_CODE GetCodeByCommand(const char* command_name)
 {
     assert(command_name);
+
+    long long command_name_hash = StrHash(command_name);
     
     for (int i = 1; i < CMD_TOTAL_NUMBER; i++)
     {
-        if (OP_TABLE[i].name && strcmp(OP_TABLE[i].name, command_name) == 0)
+        if (OP_TABLE[i].name && OP_TABLE[i].name_hash == command_name_hash)
         {
-            return OP_TABLE[i].command_code;
+            if (strcmp(OP_TABLE[i].name, command_name) == 0) return OP_TABLE[i].command_code;
         }
     }
+
     return UNKNOWN;
 }
 

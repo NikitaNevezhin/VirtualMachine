@@ -9,6 +9,7 @@
 
 #include "../UTILS/PrintColor.h"
 #include "../UTILS/FileTools.h"
+#include "../UTILS/StrHash.h"
 #include "../CPU/CommandCodes.h"
 #include "../CPU/ProcessorStruct.h"
 
