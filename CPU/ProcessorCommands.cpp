@@ -7,7 +7,7 @@
 CMD_STATUS ProcessorPUSH(Processor* processor)
 {
     assert(processor);
-    PROCESSOR_STACK_PUSH(processor, processor->code_segment[processor->ip + 1]);
+    PROCESSOR_STACK_PUSH(processor, processor->code_segment[processor->ip + 1] * 1000);
     processor->ip += 2;  // the next command after PUSH is situated after PUSH argument
     // STACK_DUMP(&processor->stk, processor->stk_err_status);
     return EXECUTION_SUCCESS;
@@ -51,7 +51,7 @@ CMD_STATUS ProcessorMUL(Processor* processor)
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     
-    stack_elem_t res = prev_elem * curr_elem;
+    stack_elem_t res = (prev_elem * curr_elem) / 1000;
     processor->ip++;
     PROCESSOR_STACK_PUSH(processor, res);
 
@@ -69,7 +69,7 @@ CMD_STATUS ProcessorDIV(Processor* processor)
     if (curr_elem == 0)
         return ZERO_DIVISION;
     
-    stack_elem_t res = prev_elem / curr_elem;
+    stack_elem_t res = (1000 * prev_elem) / curr_elem;
     processor->ip++;
     PROCESSOR_STACK_PUSH(processor, res);
 
@@ -79,7 +79,7 @@ CMD_STATUS ProcessorDIV(Processor* processor)
 CMD_STATUS ProcessorOUT(Processor* processor)
 {
     assert(processor);
-    printf("Last stack elem is <%d>\n", PROCESSOR_STACK_POP(processor));
+    printf("Last stack elem is <%lg>\n", (double)PROCESSOR_STACK_POP(processor) / 1000);
     ProcessError(processor->stk_err_status);
     processor->ip++;
     return EXECUTION_SUCCESS; 
@@ -236,7 +236,7 @@ CMD_STATUS ProcessorIN(Processor* processor)
     if (read_res == 0)
         return INVALID_INPUT;
 
-    PROCESSOR_STACK_PUSH(processor, input_value);
+    PROCESSOR_STACK_PUSH(processor, input_value * 1000);
     ProcessError(processor->stk_err_status);
 
     processor->ip++;
