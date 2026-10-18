@@ -55,6 +55,9 @@ int ProcessorInit(Processor* processor, const char* bin_byte_code)
     for (int i = 0; i < RAM_SIZE; i++)
         processor->RAM[i] = POIZON;
 
+    processor->screen_width = SCREEN_WIDTH;
+    processor->screen_height = SCREEN_HEIGHT;
+    
     processor->ip = 0;  // ready to read first instruction of code_segment
 
     return 0;

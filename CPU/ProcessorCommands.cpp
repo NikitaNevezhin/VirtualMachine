@@ -308,4 +308,24 @@ CMD_STATUS ProcessorPOPM(Processor* processor)
     return EXECUTION_SUCCESS;
 }
 
+CMD_STATUS ProcessorPAINT(Processor* processor)
+{
+    for (int i = 0; i < processor->screen_height; i++)
+    {
+        for (int j = 0; j < processor->screen_width; j++)
+        {
+            if (IS_POIZON(processor->RAM[i * processor->screen_width + j]))   printf(". ");
+
+            else printf("* ");
+        }
+
+        printf("\n");
+    }
+
+    printf("\n");
+
+    processor->ip++;
+    return EXECUTION_SUCCESS;
+}
+
 #endif

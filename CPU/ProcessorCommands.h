@@ -59,4 +59,6 @@ CMD_STATUS      ProcessorPUSHM   (Processor* processor);
 
 CMD_STATUS      ProcessorPOPM    (Processor* processor);
 
+CMD_STATUS      ProcessorPAINT   (Processor* processor);
+
 #endif

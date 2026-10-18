@@ -42,6 +42,8 @@ extern CMD_STATUS      ProcessorPUSHM   (Processor* processor);
 
 extern CMD_STATUS      ProcessorPOPM    (Processor* processor);
 
+extern CMD_STATUS      ProcessorPAINT   (Processor* processor);
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // USER! GET THE FUCK OUT OF HERE!
 // DO NOT CHANGE THE ORDER OF COMMANDS IN OP_TABLE
@@ -50,7 +52,7 @@ extern CMD_STATUS      ProcessorPOPM    (Processor* processor);
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 const CommandInfo OP_TABLE[CMD_TOTAL_NUMBER] =
 {
-    {UNKNOWN,    NULL, 0,              NULL,  0},
+    {UNKNOWN,    NULL,                0,             NULL,  0},
     { PUSH,    "PUSH",  StrHash("PUSH"),    ProcessorPUSH,  1},
     {  ADD,     "ADD",   StrHash("ADD"),     ProcessorADD,  0},
     {  SUB,     "SUB",   StrHash("SUB"),     ProcessorSUB,  0},
@@ -71,5 +73,6 @@ const CommandInfo OP_TABLE[CMD_TOTAL_NUMBER] =
     { CALL,    "CALL",  StrHash("CALL"),    ProcessorCALL,  1},
     {  RET,     "RET",   StrHash("RET"),     ProcessorRET,  0},
     {PUSHM,   "PUSHM", StrHash("PUSHM"),   ProcessorPUSHM,  1},
-    {POPM,     "POPM",  StrHash("POPM"),    ProcessorPOPM,  1}
+    {POPM,     "POPM",  StrHash("POPM"),    ProcessorPOPM,  1},
+    {PAINT,   "PAINT", StrHash("PAINT"),   ProcessorPAINT,  0}
 };

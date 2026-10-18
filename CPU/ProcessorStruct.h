@@ -14,7 +14,9 @@
 #define MAX_CODE_SEGMENT_LEN 1024 * 1024 // 1 MB
 #define REGISTERS_AMOUNT     4
 
-#define RAM_SIZE             20
+#define SCREEN_WIDTH         10
+#define SCREEN_HEIGHT        10
+#define RAM_SIZE   SCREEN_HEIGHT * SCREEN_WIDTH
 
 enum REGISTER_CODE
 {   
@@ -39,6 +41,9 @@ struct Processor
 
     stack_t call_stk;
     STK_ERR_STATUS call_stk_err_status;
+
+    int screen_width;
+    int screen_height;
 };
 
 int     LoadCodeSegment     (Processor* processor, const char* bin_file_name);  // creates code_segment from ByteCode.bin (IS CURRENTLY USED)

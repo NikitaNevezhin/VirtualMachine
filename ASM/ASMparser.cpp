@@ -165,7 +165,7 @@ void ParseRAMCommand(COMMAND_CODE command_code, char* line, char* command_name,
     }
 
     int reg_code = (int)GetRegCodeByName(reg_name);
-    printf("%s %d\n", reg_name, reg_code);
+    // printf("%s %d\n", reg_name, reg_code);
 
     if (is_bin)
     {
