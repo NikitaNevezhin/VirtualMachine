@@ -37,6 +37,7 @@ REGISTER_CODE GetRegCodeByName(char* name)
     if (strcmp(name, "BX") == 0)     return BX;
     if (strcmp(name, "CX") == 0)     return CX;
     if (strcmp(name, "DX") == 0)     return DX;
+    if (strcmp(name, "EX") == 0)     return EX;
 
     return UNKNOWN_REG;
 }
@@ -157,7 +158,7 @@ void ParseRAMCommand(COMMAND_CODE command_code, char* line, char* command_name,
                      FILE* ByteCode, int line_num, bool is_bin)
 {
     char reg_name[REG_NAME_LEN] = {};
-    if (sscanf(line, "%*s [%[A-DX]]", &reg_name) != 1) 
+    if (sscanf(line, "%*s [%[A-EX]]", &reg_name) != 1) 
     {
         PRINT_RED("Could not read from file at line %d: %s requires RAM index\n", line_num, command_name);
         fclose(ByteCode);
@@ -253,7 +254,7 @@ void WriteByteCode(const char* input_file, const char* output_file, bool is_bin)
         else if ((command_code >= JMP && command_code <= JNE) || command_code == CALL)
             ParseJumpCallCommand(command_code, curr_line, command_name, labels, ByteCode, i + 1, is_bin);
 
-        else if (command_code == PUSHM || command_code == POPM)
+        else if (command_code == PUSHM || command_code == POPM || command_code == POPV)
             ParseRAMCommand(command_code, curr_line, command_name, ByteCode, i + 1, is_bin);
 
         else 

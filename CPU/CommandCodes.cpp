@@ -42,6 +42,8 @@ extern CMD_STATUS      ProcessorPUSHM   (Processor* processor);
 
 extern CMD_STATUS      ProcessorPOPM    (Processor* processor);
 
+extern CMD_STATUS      ProcessorPOPV    (Processor* processor);
+
 extern CMD_STATUS      ProcessorPAINT   (Processor* processor);
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -74,5 +76,6 @@ const CommandInfo OP_TABLE[CMD_TOTAL_NUMBER] =
     {  RET,     "RET",   StrHash("RET"),     ProcessorRET,  0},
     {PUSHM,   "PUSHM", StrHash("PUSHM"),   ProcessorPUSHM,  1},
     {POPM,     "POPM",  StrHash("POPM"),    ProcessorPOPM,  1},
+    { POPV,    "POPV",  StrHash("POPV"),    ProcessorPOPV,  1},
     {PAINT,   "PAINT", StrHash("PAINT"),   ProcessorPAINT,  0}
 };

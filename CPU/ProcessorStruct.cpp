@@ -57,6 +57,9 @@ int ProcessorInit(Processor* processor, const char* bin_byte_code)
 
     processor->screen_width = SCREEN_WIDTH;
     processor->screen_height = SCREEN_HEIGHT;
+    // first (RAM_SIZE - VRAM_SIZE) elems of RAM are to be used NOT for displaying
+    // all the others elems are considered to be VRAM and are used to display something
+    processor->VRAM = processor->RAM + (RAM_SIZE - VRAM_SIZE);
     
     processor->ip = 0;  // ready to read first instruction of code_segment
 

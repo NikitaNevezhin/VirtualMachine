@@ -308,13 +308,33 @@ CMD_STATUS ProcessorPOPM(Processor* processor)
     return EXECUTION_SUCCESS;
 }
 
+CMD_STATUS ProcessorPOPV(Processor* processor)
+{
+    assert(processor);
+    // STACK_DUMP(&processor->stk, processor->stk_err_status);
+    stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
+    ProcessError(processor->stk_err_status);
+
+    int reg_index = processor->code_segment[processor->ip + 1] - 1;  // inside code segment we have reg_code (not index), that's why -1
+    if (reg_index < 0 || reg_index >= REGISTERS_AMOUNT) return UNKNOWN_REGISTER;
+    
+    int VRAM_index = processor->REGS[reg_index];
+
+    if (VRAM_index < 0 || VRAM_index > VRAM_SIZE)  return VRAM_INDEX_OUT_OF_RANGE;
+
+    processor->VRAM[VRAM_index] = curr_elem;    
+    
+    processor->ip += 2;
+    return EXECUTION_SUCCESS; 
+}
+
 CMD_STATUS ProcessorPAINT(Processor* processor)
 {
     for (int i = 0; i < processor->screen_height; i++)
     {
         for (int j = 0; j < processor->screen_width; j++)
         {
-            if (IS_POIZON(processor->RAM[i * processor->screen_width + j]))   printf(". ");
+            if (IS_POIZON(processor->VRAM[i * processor->screen_width + j]))   printf(". ");
 
             else printf("* ");
         }

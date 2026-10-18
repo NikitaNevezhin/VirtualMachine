@@ -16,6 +16,7 @@ const char* GetErrorString(CMD_STATUS cmd_status)
         case INVALID_INPUT:             return "INVALID_INPUT";
         case ZERO_DIVISION:             return "ZERO_DIVISION";
         case RAM_INDEX_OUT_OF_RANGE:    return "RAM_INDEX_OUT_OF_RANGE";
+        case VRAM_INDEX_OUT_OF_RANGE:   return "VRAM_INDEX_OUT_OF_RANGE";
         case MACHINE_STOP:              return "MACHINE_STOP";
         default:                        return "UNKNOWN_CMD_STATUS";
     }

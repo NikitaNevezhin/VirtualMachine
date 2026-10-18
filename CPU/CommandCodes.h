@@ -2,7 +2,7 @@
 
 #define COMMAND_CODES_H
 
-#define CMD_TOTAL_NUMBER 23  // including "UNKNOWN"
+#define CMD_TOTAL_NUMBER 24  // including "UNKNOWN"
 
 #include "../UTILS/StrHash.h"
 #include "ProcessorStruct.h"
@@ -31,7 +31,8 @@ enum COMMAND_CODE
     RET = 19,
     PUSHM = 20,
     POPM = 21,
-    PAINT = 22,
+    POPV = 22,
+    PAINT = 23
 };
 
 enum CMD_STATUS
@@ -44,6 +45,7 @@ enum CMD_STATUS
     INVALID_INPUT,
     ZERO_DIVISION,
     RAM_INDEX_OUT_OF_RANGE,
+    VRAM_INDEX_OUT_OF_RANGE,
     MACHINE_STOP
 };
 

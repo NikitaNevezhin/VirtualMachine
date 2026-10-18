@@ -12,11 +12,12 @@
 
 #define CALL_STK_MIN_SIZE    5
 #define MAX_CODE_SEGMENT_LEN 1024 * 1024 // 1 MB
-#define REGISTERS_AMOUNT     4
+#define REGISTERS_AMOUNT     5
 
-#define SCREEN_WIDTH         10
-#define SCREEN_HEIGHT        10
-#define RAM_SIZE   SCREEN_HEIGHT * SCREEN_WIDTH
+#define SCREEN_WIDTH         20
+#define SCREEN_HEIGHT        20
+#define VRAM_SIZE   SCREEN_HEIGHT * SCREEN_WIDTH
+#define RAM_SIZE    10 + VRAM_SIZE
 
 enum REGISTER_CODE
 {   
@@ -24,7 +25,8 @@ enum REGISTER_CODE
     AX = 1,
     BX = 2,
     CX = 3,
-    DX = 4
+    DX = 4,
+    EX = 5
 };
 
 struct Processor
@@ -38,6 +40,7 @@ struct Processor
 
     stack_elem_t  REGS[REGISTERS_AMOUNT];
     stack_elem_t* RAM;
+    stack_elem_t* VRAM;
 
     stack_t call_stk;
     STK_ERR_STATUS call_stk_err_status;
