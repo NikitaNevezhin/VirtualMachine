@@ -1,0 +1,147 @@
+; General ellipse equation: b^2(x-xc)^2 + a^2(y - yc)^2 <= a^2 * b^2
+
+; i - runs through HEIGHT, j - runs through WIDTH 
+; For simpliciy HEIGHT = WIDTH = n
+
+; Then pixel center coordinates: 
+; x = i + 0.5
+; y = j + 0.5
+
+; Ellipse center coordinates:
+; xc = n / 2
+; yc = n /2
+
+; To escape using double type, we are going to use the following equation:
+; b^2 * (2j + 1 - n)^2 + a^2 * (2i + 1 - n)^2 <= 4 * a^2 * b^2
+
+; RAM will have following values: {a^2, b^2, 4 * a^2 * b^2, ...}
+; EX is used in square function (DO NOT USE EX)
+
+; AX = i
+; BX = j
+; CX = n (const)
+; DX - working register
+; EX - functions register
+
+
+PUSH 20
+POPr CX ; n = SCREEN_WIDTH = SCREEN_HEIGHT
+PUSH 10
+POPr AX ; a - larger ellipse diameter
+PUSH 8
+POPr BX ; b - smaller ellipse diameter
+
+PUSHr AX
+CALL :1
+PUSH 0
+POPr DX
+POPM [DX] ; RAM[0] = a ^ 2
+
+PUSHr BX
+CALL :1
+PUSH 1
+POPr DX
+POPM [DX] ; RAM[1] = b ^ 2
+
+PUSH 4
+PUSH 0
+POPr DX
+PUSHM [DX] ; get a^2
+PUSH 1
+POPr DX
+PUSHM [DX] ; get b^2
+MUL
+MUL
+PUSH 2
+POPr DX
+POPM [DX] ; RAM[2] = 4 * a^2 * b^2
+
+; for (int i = 0; i < n; i++)
+;   for(int j = 0; j < n; j++)
+;       fill_if_inside_ellipse();
+
+PUSHr CX
+POPr AX   ; AX = n
+
+:4
+PUSHr AX
+PUSH 1
+SUB       ; i--
+POPr AX
+PUSHr AX
+PUSH 0
+JA :10
+; for this i setting j = n
+PUSHr CX
+POPr BX   ; BX = n
+
+:5
+PUSHr BX
+PUSH 1
+SUB       ; j--
+POPr BX
+PUSHr BX
+PUSH 0
+JA :4
+CALL :2
+JMP :5
+
+
+:10
+PAINT
+HLT
+; square function - the num to be squared is on top of the stack
+:1  
+POPr EX  ; EX = 9
+PUSHr EX
+PUSHr EX
+MUL
+RET
+
+:3       ; filling VRAM[i][j] with value
+PUSHr AX
+PUSHr CX
+MUL
+PUSHr BX
+ADD
+POPr DX
+PUSH 1
+POPV [DX]
+RET
+
+; fill_if_inside_ellipse function
+:2
+PUSH 2
+PUSHr BX
+MUL
+PUSH 1
+ADD
+PUSHr CX
+SUB
+CALL :1
+PUSH 1
+POPr DX
+PUSHM [DX]
+MUL       ; b^2 * (2j + 1 - n)^2 is on top of the stack
+
+PUSH 2
+PUSHr AX
+MUL
+PUSH 1
+ADD
+PUSHr CX
+SUB
+CALL :1
+PUSH 0
+POPr DX
+PUSHM [DX]
+MUL       ; a^2 * (2i + 1 - n)^2 is on top of the stack
+
+ADD
+; b^2 * (2j + 1 - n)^2 + a^2 * (2i + 1 - n)^2 is on top of the stack
+
+PUSH 2
+POPr DX
+PUSHM [DX] ; 4 * a^2 * b^2 is on top of the stack
+JAE :3
+RET
