@@ -1,0 +1,113 @@
+; AX = a (const)
+; BX = b (const)
+; CX = c (const)
+; DX = D (const)
+
+IN
+POPr AX
+IN
+POPr BX
+IN
+POPr CX
+
+PUSHr AX
+PUSH 0
+JE :1 a == 0
+
+; calculating discriminant
+CALL :4
+POPr DX
+
+;checking discriminant
+PUSHr DX
+PUSH 0
+JA :5
+
+PUSHr DX
+PUSH 0
+JE :6
+
+; else if D > 0
+PUSHr BX
+PUSH -1
+MUL
+PUSHr DX
+SQRT
+ADD
+PUSH 2
+PUSHr AX
+MUL
+DIV
+OUT
+
+PUSHr BX
+PUSH -1
+MUL
+PUSHr DX
+SQRT
+SUB
+PUSH 2
+PUSHr AX
+MUL
+DIV
+OUT
+
+HLT
+; case if a == 0
+:1
+PUSHr BX
+PUSH 0
+JE :2 ; b == 0
+PUSHr CX
+PUSH -1
+MUL
+PUSHr BX
+DIV
+OUT
+HLT
+
+; case if a == 0 & b == 0
+:2
+PUSHr CX
+PUSH 0
+JE :3
+; case if a == 0 & b == 0 & c != 0
+JMP :5
+
+; case if a == 0 & b == 0 & c == 0
+:3
+PUSH 888
+OUT
+HLT
+
+
+; discriminant function
+:4 
+PUSHr BX
+PUSHr BX
+MUL
+PUSH 4
+PUSHr AX
+PUSHr CX
+MUL
+MUL
+SUB
+RET
+
+; no solutions
+:5
+PUSH 404
+OUT
+HLT
+
+; D = 0 - single solution
+:6
+PUSHr BX
+PUSH -1
+MUL
+PUSH 2
+PUSHr AX
+MUL
+DIV
+OUT
+HLT

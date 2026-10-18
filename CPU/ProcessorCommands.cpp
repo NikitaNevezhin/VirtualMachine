@@ -348,4 +348,17 @@ CMD_STATUS ProcessorPAINT(Processor* processor)
     return EXECUTION_SUCCESS;
 }
 
+CMD_STATUS ProcessorSQRT(Processor* processor)
+{
+    assert(processor);
+    stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
+    ProcessError(processor->stk_err_status);
+    
+    stack_elem_t res = (stack_elem_t)(sqrt(curr_elem * 1000));
+    processor->ip++;
+    PROCESSOR_STACK_PUSH(processor, res);
+
+    return EXECUTION_SUCCESS;    
+}
+
 #endif

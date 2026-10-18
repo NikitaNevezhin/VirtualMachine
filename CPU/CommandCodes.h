@@ -2,7 +2,7 @@
 
 #define COMMAND_CODES_H
 
-#define CMD_TOTAL_NUMBER 24  // including "UNKNOWN"
+#define CMD_TOTAL_NUMBER 25  // including "UNKNOWN"
 
 #include "../UTILS/StrHash.h"
 #include "ProcessorStruct.h"
@@ -32,7 +32,8 @@ enum COMMAND_CODE
     PUSHM = 20,
     POPM = 21,
     POPV = 22,
-    PAINT = 23
+    PAINT = 23,
+    SQRT = 24
 };
 
 enum CMD_STATUS

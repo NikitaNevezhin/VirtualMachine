@@ -63,4 +63,6 @@ CMD_STATUS      ProcessorPOPV    (Processor* processor);
 
 CMD_STATUS      ProcessorPAINT   (Processor* processor);
 
+CMD_STATUS      ProcessorSQRT    (Processor* processor);
+
 #endif
