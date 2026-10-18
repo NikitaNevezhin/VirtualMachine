@@ -275,7 +275,7 @@ CMD_STATUS ProcessorPUSHM(Processor* processor)
     int reg_index = processor->code_segment[processor->ip + 1] - 1;  // inside code segment we have reg_code (not index), that's why -1
     if (reg_index < 0 || reg_index >= REGISTERS_AMOUNT) return UNKNOWN_REGISTER;
 
-    int RAM_index = processor->REGS[reg_index];
+    long long RAM_index = processor->REGS[reg_index] / 1000;
 
     if (RAM_index < 0 || RAM_index > RAM_SIZE)  return RAM_INDEX_OUT_OF_RANGE;
 
@@ -298,7 +298,7 @@ CMD_STATUS ProcessorPOPM(Processor* processor)
     int reg_index = processor->code_segment[processor->ip + 1] - 1;  // inside code segment we have reg_code (not index), that's why -1
     if (reg_index < 0 || reg_index >= REGISTERS_AMOUNT) return UNKNOWN_REGISTER;
     
-    int RAM_index = processor->REGS[reg_index];
+    long long RAM_index = processor->REGS[reg_index] / 1000;
 
     if (RAM_index < 0 || RAM_index > RAM_SIZE)  return RAM_INDEX_OUT_OF_RANGE;
 
@@ -318,7 +318,7 @@ CMD_STATUS ProcessorPOPV(Processor* processor)
     int reg_index = processor->code_segment[processor->ip + 1] - 1;  // inside code segment we have reg_code (not index), that's why -1
     if (reg_index < 0 || reg_index >= REGISTERS_AMOUNT) return UNKNOWN_REGISTER;
     
-    int VRAM_index = processor->REGS[reg_index];
+    long long VRAM_index = processor->REGS[reg_index] / 1000;
 
     if (VRAM_index < 0 || VRAM_index > VRAM_SIZE)  return VRAM_INDEX_OUT_OF_RANGE;
 
@@ -354,7 +354,7 @@ CMD_STATUS ProcessorSQRT(Processor* processor)
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     
-    stack_elem_t res = (stack_elem_t)(sqrt(curr_elem * 1000));
+    stack_elem_t res = (stack_elem_t)(sqrt((double)curr_elem * 1000));
     processor->ip++;
     PROCESSOR_STACK_PUSH(processor, res);
 

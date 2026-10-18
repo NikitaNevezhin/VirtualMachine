@@ -11,7 +11,8 @@
 //------------------------USER!!!!! PLEASE, PLEASE WRITE type of elems in YOUR stack!!!!!----------------------------
 // write "#define STACK_INT" if you want to use int as stack_elem_t
 // write "#define STACK_DOUBLE" if you want to use double as stack_elem_t
-#define STACK_INT
+// write "#define STACK_LONG_LONG" if you want to use long long as stack_elem_t
+#define STACK_LONG_LONG
 //-----------------------USER!!!!! DO NOT PASS PLEASE, CHECK YOUR CHOICE, PLEASE!!!!!!!!!----------------------------
 
 #if defined(STACK_INT)
@@ -25,6 +26,26 @@
 
     #define PRINT_STACK_ELEM(elem)                  printf("%d", elem)
     #define SCANF_STACK_ELEM(variable_address)      scanf("%d", variable_address)
+
+    #define PRINT_DATA_CANARIES(left_canary, right_canary)                                                    \
+                printf("        Left:  %#X (expected %#X)\n", left_canary, DATA_LEFT_CANARY);                 \
+                printf("        Right: %#X (expected %#X)\n", right_canary, DATA_RIGHT_CANARY);               \
+
+    #define CHECK_LEFT_CANARY(left_canary)      (left_canary == DATA_LEFT_CANARY)
+
+    #define CHECK_RIGHT_CANARY(right_canary)    (right_canary == DATA_RIGHT_CANARY)
+
+#elif defined(STACK_LONG_LONG)
+    typedef long long stack_elem_t;
+
+    #define DATA_LEFT_CANARY  0xB00B135
+    #define DATA_RIGHT_CANARY 0xEBA75A0
+    #define POIZON            -66666666
+
+    #define IS_POIZON(value)  (value == POIZON)
+
+    #define PRINT_STACK_ELEM(elem)                  printf("%lld", elem)
+    #define SCANF_STACK_ELEM(variable_address)      scanf("%lld", variable_address)
 
     #define PRINT_DATA_CANARIES(left_canary, right_canary)                                                    \
                 printf("        Left:  %#X (expected %#X)\n", left_canary, DATA_LEFT_CANARY);                 \
