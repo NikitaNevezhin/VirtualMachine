@@ -156,22 +156,25 @@ void ParseStandardCommand(COMMAND_CODE command_code, char* line, char* command_n
 void ParseRAMCommand(COMMAND_CODE command_code, char* line, char* command_name,
                      FILE* ByteCode, int line_num, bool is_bin)
 {
-    int RAM_index = 0;
-    if (sscanf(line, "%*s [%d]", &RAM_index) != 1) 
+    char reg_name[REG_NAME_LEN] = {};
+    if (sscanf(line, "%*s [%[A-DX]]", &reg_name) != 1) 
     {
         PRINT_RED("Could not read from file at line %d: %s requires RAM index\n", line_num, command_name);
         fclose(ByteCode);
         abort();
     }
 
+    int reg_code = (int)GetRegCodeByName(reg_name);
+    printf("%s %d\n", reg_name, reg_code);
+
     if (is_bin)
     {
         int bin_command_code = (int)command_code;
         fwrite(&bin_command_code, sizeof(int), 1, ByteCode);
-        fwrite(&RAM_index, sizeof(int), 1, ByteCode);
+        fwrite(&reg_code, sizeof(int), 1, ByteCode);
     }
 
-    else fprintf(ByteCode, "%d %d\n", command_code, RAM_index);
+    else fprintf(ByteCode, "%d %d\n", command_code, reg_code);
 }
 
 void WriteByteCode(const char* input_file, const char* output_file, bool is_bin)

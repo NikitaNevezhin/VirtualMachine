@@ -52,6 +52,9 @@ int ProcessorInit(Processor* processor, const char* bin_byte_code)
 
     processor->RAM = temp_RAM_ptr;
 
+    for (int i = 0; i < RAM_SIZE; i++)
+        processor->RAM[i] = POIZON;
+
     processor->ip = 0;  // ready to read first instruction of code_segment
 
     return 0;
@@ -99,7 +102,11 @@ int PrintCodeSegment(Processor* processor)
 int PrintRAM(Processor* processor)
 {
     for (int i = 0; i < RAM_SIZE; i++)
-        PRINT_WHITE("%d ", processor->RAM[i]);
+    {   
+        if (IS_POIZON(processor->RAM[i]))  PRINT_WHITE(". ");
+        
+        else   PRINT_WHITE("%d ", processor->RAM[i]);
+    }
     printf("\n");
     
     return 0;

@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     // PROCESSOR_DUMP(&processor);
     RunProcessor(&processor);
 
-    // PROCESSOR_DUMP(&processor);
+    PROCESSOR_DUMP(&processor);
 
     return EXIT_SUCCESS;
 }

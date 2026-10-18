@@ -7,12 +7,13 @@
 
 #define DEBUG_PROCESSOR_STACK
 
-#define DUMP_EACH_STEP
+// #define DUMP_EACH_STEP
 #define PROCESSOR_DUMP(processor)  ProcessorDump(processor, __FILE__, __LINE__, __func__)
 
 #define CALL_STK_MIN_SIZE    5
 #define MAX_CODE_SEGMENT_LEN 1024 * 1024 // 1 MB
 #define REGISTERS_AMOUNT     4
+
 #define RAM_SIZE             20
 
 enum REGISTER_CODE
