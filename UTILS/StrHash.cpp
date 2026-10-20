@@ -2,6 +2,7 @@
 
 long long StrHash(const char* str) 
 {
+    assert(str);
     long long hash = 5381;
     while (*str)
     {

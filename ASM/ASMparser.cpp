@@ -33,6 +33,7 @@ COMMAND_CODE GetCodeByCommand(const char* command_name)
 
 REGISTER_CODE GetRegCodeByName(char* name)
 {
+    assert(name);
     if (strcmp(name, "AX") == 0)     return AX;
     if (strcmp(name, "BX") == 0)     return BX;
     if (strcmp(name, "CX") == 0)     return CX;
@@ -45,6 +46,8 @@ REGISTER_CODE GetRegCodeByName(char* name)
 // returns true if parsed line as label
 bool ParseLabelDeclaration(const char* line, int curr_ip, int* labels)
 {
+    assert(line);
+    assert(labels);
     if (line[0] == ':')
     {
         int label_num = 0;
@@ -64,6 +67,10 @@ bool ParseLabelDeclaration(const char* line, int curr_ip, int* labels)
 void ParseJumpCallCommand(COMMAND_CODE command_code, char* line, char* command_name, 
                       int* labels, FILE* ByteCode, int line_num, bool is_bin)
 {
+    assert(line);
+    assert(labels);
+    assert(command_name);
+    assert(ByteCode);
     int jump_label = 0;
 
     if (sscanf(line, "%*s :%d", &jump_label) != 1)
@@ -93,6 +100,9 @@ void ParseJumpCallCommand(COMMAND_CODE command_code, char* line, char* command_n
 void ParseRegisterCommand(COMMAND_CODE command_code, char* line, char* command_name, 
                           FILE* ByteCode, int line_num, bool is_bin)
 {
+    assert(line);
+    assert(command_name);
+    assert(ByteCode);
     char reg_name[REG_NAME_LEN] = {};
     if (sscanf(line, "%*s %s", reg_name) != 1) 
     {
@@ -122,7 +132,10 @@ void ParseRegisterCommand(COMMAND_CODE command_code, char* line, char* command_n
 
 void ParseStandardCommand(COMMAND_CODE command_code, char* line, char* command_name, 
                            FILE* ByteCode, int line_num, bool is_bin) 
-{
+{   
+    assert(line);
+    assert(command_name);
+    assert(ByteCode);
     int expected_args = OP_TABLE[command_code].arg_amount;
 
     if (expected_args == 0) 
@@ -157,6 +170,9 @@ void ParseStandardCommand(COMMAND_CODE command_code, char* line, char* command_n
 void ParseRAMCommand(COMMAND_CODE command_code, char* line, char* command_name,
                      FILE* ByteCode, int line_num, bool is_bin)
 {
+    assert(line);
+    assert(command_name);
+    assert(ByteCode);
     char reg_name[REG_NAME_LEN] = {};
     if (sscanf(line, "%*s [%[A-EX]]", &reg_name) != 1) 
     {

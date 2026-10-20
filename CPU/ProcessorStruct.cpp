@@ -68,6 +68,7 @@ int ProcessorInit(Processor* processor, const char* bin_byte_code)
 
 int PrintRegisters(Processor* processor)  // ProcessorDump helper function
 {
+    assert(processor);
     for (int i = 0; i < REGISTERS_AMOUNT; i++)
         printf("%cx = %d\n", 'a' + i, processor->REGS[i]);
 
@@ -76,6 +77,7 @@ int PrintRegisters(Processor* processor)  // ProcessorDump helper function
 
 int PrintCodeSegment(Processor* processor)
 {
+    assert(processor);
     for (int i = 0; i < processor->code_length; i++)
     {
         if (i == processor->ip)
@@ -107,6 +109,7 @@ int PrintCodeSegment(Processor* processor)
 
 int PrintRAM(Processor* processor)
 {
+    assert(processor);
     for (int i = 0; i < RAM_SIZE; i++)
     {   
         if (IS_POIZON(processor->RAM[i]))  PRINT_WHITE(". ");
@@ -120,6 +123,9 @@ int PrintRAM(Processor* processor)
 
 void ProcessorDump(Processor* processor, const char* file, int line, const char* func)
 {   
+    assert(processor);
+    assert(file);
+    assert(func);
     printf( "------------ProcessorDump----------------\n");
     printf("ProcessorDump was called in %s:%d in function %s\n", file, line, func);
 

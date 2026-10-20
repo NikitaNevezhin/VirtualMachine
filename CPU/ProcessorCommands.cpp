@@ -135,6 +135,7 @@ CMD_STATUS ProcessorJMP(Processor* processor)
 
 CMD_STATUS ProcessorJA(Processor* processor)
 {
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -150,6 +151,7 @@ CMD_STATUS ProcessorJA(Processor* processor)
 
 CMD_STATUS ProcessorJAE(Processor* processor)
 {
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -165,6 +167,7 @@ CMD_STATUS ProcessorJAE(Processor* processor)
 
 CMD_STATUS ProcessorJB(Processor* processor)
 {
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -180,6 +183,7 @@ CMD_STATUS ProcessorJB(Processor* processor)
 
 CMD_STATUS ProcessorJBE(Processor* processor)
 {
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -195,6 +199,7 @@ CMD_STATUS ProcessorJBE(Processor* processor)
 
 CMD_STATUS ProcessorJE(Processor* processor)
 {
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -210,6 +215,7 @@ CMD_STATUS ProcessorJE(Processor* processor)
 
 CMD_STATUS ProcessorJNE(Processor* processor)
 {
+    assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
@@ -225,6 +231,7 @@ CMD_STATUS ProcessorJNE(Processor* processor)
 
 CMD_STATUS ProcessorIN(Processor* processor)
 {   
+    assert(processor);
     stack_elem_t input_value = POIZON;
     PRINT_BLUE("Processor asks for numeric value: ");
     int read_res = SCANF_STACK_ELEM(&input_value);
@@ -246,6 +253,7 @@ CMD_STATUS ProcessorIN(Processor* processor)
 
 CMD_STATUS ProcessorCALL(Processor* processor)
 {
+    assert(processor);
     processor->ip++;  // go to the argument
     int function_label = processor->code_segment[processor->ip];
 
@@ -259,7 +267,8 @@ CMD_STATUS ProcessorCALL(Processor* processor)
 }
 
 CMD_STATUS ProcessorRET(Processor* processor)
-{
+{   
+    assert(processor);
     int ret_position = (int)PROCESSOR_CALL_STK_POP(processor);
     ProcessError(processor->call_stk_err_status);
     processor->ip = ret_position;
@@ -330,6 +339,7 @@ CMD_STATUS ProcessorPOPV(Processor* processor)
 
 CMD_STATUS ProcessorPAINT(Processor* processor)
 {
+    assert(processor);
     for (int i = 0; i < processor->screen_height; i++)
     {
         for (int j = 0; j < processor->screen_width; j++)
