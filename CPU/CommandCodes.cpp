@@ -77,7 +77,7 @@ const CommandInfo OP_TABLE[CMD_TOTAL_NUMBER] =
     { CALL,    "CALL",  StrHash("CALL"),    ProcessorCALL,  1},
     {  RET,     "RET",   StrHash("RET"),     ProcessorRET,  0},
     {PUSHM,   "PUSHM", StrHash("PUSHM"),   ProcessorPUSHM,  1},
-    {POPM,     "POPM",  StrHash("POPM"),    ProcessorPOPM,  1},
+    { POPM,    "POPM",  StrHash("POPM"),    ProcessorPOPM,  1},
     { POPV,    "POPV",  StrHash("POPV"),    ProcessorPOPV,  1},
     {PAINT,   "PAINT", StrHash("PAINT"),   ProcessorPAINT,  0},
     { SQRT,    "SQRT",  StrHash("SQRT"),    ProcessorSQRT,  0}

@@ -9,7 +9,7 @@
 
 ; Ellipse center coordinates:
 ; xc = n / 2
-; yc = n /2
+; yc = n / 2
 
 ; To escape using double type, we are going to use the following equation:
 ; b^2 * (2j + 1 - n)^2 + a^2 * (2i + 1 - n)^2 <= 4 * a^2 * b^2
