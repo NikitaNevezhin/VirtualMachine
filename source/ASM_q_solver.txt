@@ -28,6 +28,8 @@ PUSH 0
 JE :6
 
 ; else if D > 0
+PUSH 2 ; writing the amount of roots - 2 - for D > 0
+OUT
 PUSHr BX
 PUSH -1
 MUL
@@ -58,6 +60,8 @@ HLT
 PUSHr BX
 PUSH 0
 JE :2 ; b == 0
+PUSH 1 ; single solution
+OUT
 PUSHr CX
 PUSH -1
 MUL
@@ -96,12 +100,14 @@ RET
 
 ; no solutions
 :5
-PUSH 404
+PUSH 0 ; No solutions
 OUT
 HLT
 
 ; D = 0 - single solution
 :6
+PUSH 1 ; One solution
+OUT
 PUSHr BX
 PUSH -1
 MUL
