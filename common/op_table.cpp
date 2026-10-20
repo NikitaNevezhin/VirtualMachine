@@ -1,52 +1,6 @@
-#include "CommandCodes.h"
+#include "commands_info.h"
+#include "../SPU/ProcessorCommands.h"
 
-extern CMD_STATUS      ProcessorPUSH    (Processor* processor);
-
-extern CMD_STATUS      ProcessorADD     (Processor* processor);
-
-extern CMD_STATUS      ProcessorSUB     (Processor* processor);
-
-extern CMD_STATUS      ProcessorMUL     (Processor* processor);
-
-extern CMD_STATUS      ProcessorDIV     (Processor* processor);
-
-extern CMD_STATUS      ProcessorOUT     (Processor* processor);
-
-extern CMD_STATUS      ProcessorHLT     (Processor* processor);
-
-extern CMD_STATUS      ProcessorPUSHr   (Processor* processor);
-
-extern CMD_STATUS      ProcessorPOPr    (Processor* processor);
-
-extern CMD_STATUS      ProcessorJMP     (Processor* processor);
-
-extern CMD_STATUS      ProcessorJA      (Processor* processor);
-
-extern CMD_STATUS      ProcessorJAE     (Processor* processor);
-
-extern CMD_STATUS      ProcessorJB      (Processor* processor);
-
-extern CMD_STATUS      ProcessorJBE     (Processor* processor);
-
-extern CMD_STATUS      ProcessorJE      (Processor* processor);
-
-extern CMD_STATUS      ProcessorJNE     (Processor* processor);
-
-extern CMD_STATUS      ProcessorIN      (Processor* processor);
-
-extern CMD_STATUS      ProcessorCALL    (Processor* processor);
-
-extern CMD_STATUS      ProcessorRET     (Processor* processor);
-
-extern CMD_STATUS      ProcessorPUSHM   (Processor* processor);
-
-extern CMD_STATUS      ProcessorPOPM    (Processor* processor);
-
-extern CMD_STATUS      ProcessorPOPV    (Processor* processor);
-
-extern CMD_STATUS      ProcessorPAINT   (Processor* processor);
-
-extern CMD_STATUS      ProcessorSQRT    (Processor* processor);
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // USER! GET THE FUCK OUT OF HERE!

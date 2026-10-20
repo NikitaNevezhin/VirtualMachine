@@ -7,7 +7,7 @@
 #include <assert.h>
 
 #include "ProcessorStruct.h"
-#include "CommandCodes.h"
+#include "../common/commands_info.h"
 
 #define PROCESSOR_STACK_PUSH(processor, value)      StackPush(&processor->stk, value, &processor->stk_err_status) 
 

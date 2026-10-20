@@ -5,7 +5,7 @@
 #define CMD_TOTAL_NUMBER 25  // including "UNKNOWN"
 
 #include "../UTILS/StrHash.h"
-#include "ProcessorStruct.h"
+#include "../SPU/ProcessorStruct.h"
 
 enum COMMAND_CODE
 {

@@ -4,7 +4,7 @@
 // .\build/assembler.exe source/ASM_fibonacci.txt source/fibonacci.bin source/fibonacci.txt
 // .\build/assembler.exe source/ASM_code.txt source/byte_code.bin source/byte_code.txt
 
-// g++ ASM/assembler.cpp ASM/ASMparser.cpp CPU/CommandCodes.cpp CPU/ProcessorCommands.cpp CPU/ProcessorEngine.cpp CPU/ProcessorStruct.cpp STACK/Stack.cpp STACK/StackErrorProcessor.cpp UTILS/StrHash.cpp UTILS/FloatTools.cpp UTILS/FileTools.cpp -o build/assembler.exe -Wall -Wextra -Weffc++ -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-security -Wformat=2 -Wignored-qualifiers -Winit-self -Winline -Wlogical-op -Wmain -Wmissing-declarations -Wno-missing-field-initializers -Wmissing-include-dirs -Wnon-virtual-dtor -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wswitch-default -Wswitch-enum -Wtype-limits -Wundef -Wunreachable-code -Wwrite-strings -fexceptions -g -pipe -D_DEBUG -D_EJUDGE_CLIENT_SIDE -D_EJC -Wno-format -Wno-format-security
+// g++ ASM/assembler.cpp ASM/ASMparser.cpp common/commands_info.h common/op_table.cpp SPU/ProcessorCommands.cpp SPU/ProcessorEngine.cpp SPU/ProcessorStruct.cpp STACK/Stack.cpp STACK/StackErrorProcessor.cpp UTILS/StrHash.cpp UTILS/FloatTools.cpp UTILS/FileTools.cpp -o build/assembler.exe -Wall -Wextra -Weffc++ -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-security -Wformat=2 -Wignored-qualifiers -Winit-self -Winline -Wlogical-op -Wmain -Wmissing-declarations -Wno-missing-field-initializers -Wmissing-include-dirs -Wnon-virtual-dtor -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wshadow -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wswitch-default -Wswitch-enum -Wtype-limits -Wundef -Wunreachable-code -Wwrite-strings -fexceptions -g -pipe -D_DEBUG -D_EJUDGE_CLIENT_SIDE -D_EJC -Wno-format -Wno-format-security
 
 char* CreateByteCodeName(const char* BinCode);
 
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 char* CreateByteCodeName(const char* BinCode)
 {
     int length = strlen(BinCode);
-    char* ByteCode = (char*)calloc(length + 1, sizeof(char));  // +1 as we include '\0'
+    char* ByteCode = (char*)calloc(length + 4, sizeof(char));  // +1 as we include '\0'
     strcpy(ByteCode, BinCode);
 
     char* last_dot = strrchr(ByteCode, '.');

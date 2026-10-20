@@ -10,8 +10,8 @@
 #include "../UTILS/PrintColor.h"
 #include "../UTILS/FileTools.h"
 #include "../UTILS/StrHash.h"
-#include "../CPU/CommandCodes.h"
-#include "../CPU/ProcessorStruct.h"
+#include "../common/commands_info.h"
+#include "../SPU/ProcessorStruct.h"
 
 #define LABELS_AMOUNT 100
 #define COMMAND_LEN   20

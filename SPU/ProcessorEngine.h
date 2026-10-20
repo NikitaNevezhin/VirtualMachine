@@ -8,6 +8,7 @@
 
 #include "ProcessorStruct.h"
 #include "ProcessorCommands.h"
+#include "../common/commands_info.h"
 
 const char*     GetErrorString    (CMD_STATUS cmd_status);
 
