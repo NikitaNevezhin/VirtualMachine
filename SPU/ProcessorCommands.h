@@ -5,9 +5,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <limits.h>
+#include <errno.h>
+#include <string.h>
 
 #include "ProcessorStruct.h"
 #include "../common/commands_info.h"
+
+#define BUFFER_SIZE 100  // buffer is used in ProcessorIN
 
 #define PROCESSOR_STACK_PUSH(processor, value)      StackPush(&processor->stk, value, &processor->stk_err_status) 
 

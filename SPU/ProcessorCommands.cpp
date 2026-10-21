@@ -232,22 +232,42 @@ CMD_STATUS ProcessorJNE(Processor* processor)
 CMD_STATUS ProcessorIN(Processor* processor)
 {   
     assert(processor);
-    stack_elem_t input_value = POIZON;
     PRINT_BLUE("Processor asks for numeric value: ");
-    int read_res = SCANF_STACK_ELEM(&input_value);
 
-    // cleaning buffer from spaces and '\n'
-    while (getchar() != '\n')
-        ;
+    char buffer[BUFFER_SIZE] = "";
+    
+    if (fgets(buffer, BUFFER_SIZE, stdin) == NULL)   return INVALID_INPUT;
 
-    if (read_res == 0)
+    if (strchr(buffer, '\n') == NULL) 
+    {
+        int ch = 0;
+        while ((ch = getchar()) != '\n' && ch != EOF)
+            ;
+    }
+
+    char* endptr = NULL;
+    errno = 0;
+    
+    long long input_value = strtoll(buffer, &endptr, 10);
+
+    if (errno == ERANGE) 
+    {
+        PRINT_RED("ERROR: entered value is out of range\n");
+        return INVALID_INPUT; 
+    }
+
+    if (endptr == buffer)  return INVALID_INPUT;  // strtoll ended scanning at the very beginning - no digits found
+
+    if (input_value > LLONG_MAX / 1000 || input_value < LLONG_MIN / 1000) 
+    {
+        PRINT_RED("Error: Number will overflow after fixed-point scaling (*1000)!\n");
         return INVALID_INPUT;
+    }
 
     PROCESSOR_STACK_PUSH(processor, input_value * 1000);
     ProcessError(processor->stk_err_status);
 
     processor->ip++;
-
     return EXECUTION_SUCCESS;
 }
 
