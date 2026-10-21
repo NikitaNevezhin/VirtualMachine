@@ -14,16 +14,18 @@ struct FileInfo
     char** indexes;
 };
 
-int     StrCount            (char* string, char symb);
-
-int     GetFileSize         (const char* filename);
-
-int     ReadFromFile        (const char* filename, char destination[], int size);
-
-void    WriteDelimeter      (const char* filename);
-
-void    CreateFileInfo      (FileInfo *file_info, const char* filename);
-
-void    PrintFileInfo       (FileInfo *file_info);
+int     StrCount                (char* string, char symb);
+    
+int     GetFileSize             (const char* filename);
+    
+int     ReadFromFile            (const char* filename, char destination[], int size);
+    
+void    WriteDelimeter          (const char* filename);
+    
+void    CreateFileInfo          (FileInfo *file_info, const char* filename);
+    
+void    PrintFileInfo           (FileInfo *file_info);
+    
+char*   ChangeFileExtension     (const char* filename, const char* new_extension);
 
 #endif

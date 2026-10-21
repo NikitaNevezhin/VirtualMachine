@@ -144,4 +144,33 @@ void PrintFileInfo(FileInfo *file_info)
     printf("Lines in file: %d\n", file_info->lines);
 }
 
+char* ChangeFileExtension(const char* filename, const char* new_extension)
+{
+    assert(filename);
+    assert(new_extension);
+
+    const char* last_dot = strrchr(filename, '.');
+
+    int length_without_extension = (int)(last_dot - filename);
+    int new_extension_length = strlen(new_extension);
+
+    int new_length = length_without_extension + new_extension_length + 1;  // length including '\0'
+
+    char* new_filename = (char*)calloc(new_length, sizeof(char));
+    
+    if (new_filename == NULL)
+    {
+        printf("In %s: callocation failed\n", __func__);
+        return NULL;
+    }
+
+    strncpy(new_filename, filename, length_without_extension);  // copying everything except extension
+    new_filename[length_without_extension] = '\0';  // otherwise we are going to fuck up in strcat
+
+    strcat(new_filename, ".");
+    strcat(new_filename, new_extension);
+
+    return new_filename;
+}
+
 #endif
