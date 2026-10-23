@@ -37,7 +37,7 @@ CMD_STATUS RunCommand(Processor* processor)
    PROCESSOR_DUMP(processor);
    #endif
    
-   return OP_TABLE[curr_command].command(processor);
+   return OP_TABLE[curr_command].command(processor, curr_command);
 }
 
 int RunProcessor(Processor* processor)

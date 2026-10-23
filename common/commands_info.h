@@ -50,7 +50,7 @@ enum CMD_STATUS
     MACHINE_STOP
 };
 
-typedef CMD_STATUS (*Command)(Processor*);
+typedef CMD_STATUS (*Command)(Processor*, COMMAND_CODE);
 
 struct CommandInfo
 {

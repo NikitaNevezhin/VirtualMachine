@@ -24,52 +24,32 @@
 
 #define PROCESSOR_CALL_STK_POP(processor)           StackPop(&processor->call_stk, &processor->call_stk_err_status)
 
-CMD_STATUS      ProcessorPUSH    (Processor* processor);
+CMD_STATUS      ProcessorPUSH               (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorADD     (Processor* processor);
+CMD_STATUS      ProcessorArithm             (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorSUB     (Processor* processor);
+CMD_STATUS      ProcessorOUT                (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorMUL     (Processor* processor);
+CMD_STATUS      ProcessorHLT                (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorDIV     (Processor* processor);
+CMD_STATUS      ProcessorRegCommand         (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorOUT     (Processor* processor);
+CMD_STATUS      ProcessorJMP                (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorHLT     (Processor* processor);
+CMD_STATUS      ProcessorConditionalJMP     (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorPUSHr   (Processor* processor);
+CMD_STATUS      ProcessorIN                 (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorPOPr    (Processor* processor);
+CMD_STATUS      ProcessorCALL               (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorJMP     (Processor* processor);
+CMD_STATUS      ProcessorRET                (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorJA      (Processor* processor);
+CMD_STATUS      ProcessorMemCommand         (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorJAE     (Processor* processor);
+CMD_STATUS      ProcessorPOPV               (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorJB      (Processor* processor);
+CMD_STATUS      ProcessorPAINT              (Processor* processor, COMMAND_CODE command_code);
 
-CMD_STATUS      ProcessorJBE     (Processor* processor);
-
-CMD_STATUS      ProcessorJE      (Processor* processor);
-
-CMD_STATUS      ProcessorJNE     (Processor* processor);
-
-CMD_STATUS      ProcessorIN      (Processor* processor);
-
-CMD_STATUS      ProcessorCALL    (Processor* processor);
-
-CMD_STATUS      ProcessorRET     (Processor* processor);
-
-CMD_STATUS      ProcessorPUSHM   (Processor* processor);
-
-CMD_STATUS      ProcessorPOPM    (Processor* processor);
-
-CMD_STATUS      ProcessorPOPV    (Processor* processor);
-
-CMD_STATUS      ProcessorPAINT   (Processor* processor);
-
-CMD_STATUS      ProcessorSQRT    (Processor* processor);
+CMD_STATUS      ProcessorSQRT               (Processor* processor, COMMAND_CODE command_code);
 
 #endif
