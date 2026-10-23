@@ -14,6 +14,8 @@
 
 #define BUFFER_SIZE 100  // buffer is used in ProcessorIN
 
+#define INT_ARITH_KOEFF 1000
+
 #define PROCESSOR_STACK_PUSH(processor, value)      StackPush(&processor->stk, value, &processor->stk_err_status) 
 
 #define PROCESSOR_STACK_POP(processor)              StackPop(&processor->stk, &processor->stk_err_status)

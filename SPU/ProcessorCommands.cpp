@@ -7,7 +7,7 @@
 CMD_STATUS ProcessorPUSH(Processor* processor)
 {
     assert(processor);
-    PROCESSOR_STACK_PUSH(processor, processor->code_segment[processor->ip + 1] * 1000);
+    PROCESSOR_STACK_PUSH(processor, processor->code_segment[processor->ip + 1] * INT_ARITH_KOEFF);
     processor->ip += 2;  // the next command after PUSH is situated after PUSH argument
     // STACK_DUMP(&processor->stk, processor->stk_err_status);
     return EXECUTION_SUCCESS;
@@ -51,7 +51,7 @@ CMD_STATUS ProcessorMUL(Processor* processor)
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     
-    stack_elem_t res = (prev_elem * curr_elem) / 1000;
+    stack_elem_t res = (prev_elem * curr_elem) / INT_ARITH_KOEFF;
     processor->ip++;
     PROCESSOR_STACK_PUSH(processor, res);
 
@@ -69,7 +69,7 @@ CMD_STATUS ProcessorDIV(Processor* processor)
     if (curr_elem == 0)
         return ZERO_DIVISION;
     
-    stack_elem_t res = (1000 * prev_elem) / curr_elem;
+    stack_elem_t res = (INT_ARITH_KOEFF * prev_elem) / curr_elem;
     processor->ip++;
     PROCESSOR_STACK_PUSH(processor, res);
 
@@ -79,7 +79,7 @@ CMD_STATUS ProcessorDIV(Processor* processor)
 CMD_STATUS ProcessorOUT(Processor* processor)
 {
     assert(processor);
-    printf("Last stack elem is <%lg>\n", (double)PROCESSOR_STACK_POP(processor) / 1000);
+    printf("Last stack elem is <%lg>\n", (double)PROCESSOR_STACK_POP(processor) / INT_ARITH_KOEFF);
     ProcessError(processor->stk_err_status);
     processor->ip++;
     return EXECUTION_SUCCESS; 
@@ -241,7 +241,7 @@ CMD_STATUS ProcessorIN(Processor* processor)
     if (strchr(buffer, '\n') == NULL) 
     {
         int ch = 0;
-        while ((ch = getchar()) != '\n' && ch != EOF)
+        while ((ch = getchar()) != '\n' && ch != EOF) // clear stdin buffer
             ;
     }
 
@@ -258,13 +258,13 @@ CMD_STATUS ProcessorIN(Processor* processor)
 
     if (endptr == buffer)  return INVALID_INPUT;  // strtoll ended scanning at the very beginning - no digits found
 
-    if (input_value > LLONG_MAX / 1000 || input_value < LLONG_MIN / 1000) 
+    if (input_value > LLONG_MAX / INT_ARITH_KOEFF || input_value < LLONG_MIN / INT_ARITH_KOEFF) 
     {
-        PRINT_RED("Error: Number will overflow after fixed-point scaling (*1000)!\n");
+        PRINT_RED("Error: Number will overflow after fixed-point scaling (*%d)!\n", INT_ARITH_KOEFF);
         return INVALID_INPUT;
     }
 
-    PROCESSOR_STACK_PUSH(processor, input_value * 1000);
+    PROCESSOR_STACK_PUSH(processor, input_value * INT_ARITH_KOEFF);
     ProcessError(processor->stk_err_status);
 
     processor->ip++;
@@ -304,7 +304,7 @@ CMD_STATUS ProcessorPUSHM(Processor* processor)
     int reg_index = processor->code_segment[processor->ip + 1] - 1;  // inside code segment we have reg_code (not index), that's why -1
     if (reg_index < 0 || reg_index >= REGISTERS_AMOUNT) return UNKNOWN_REGISTER;
 
-    long long RAM_index = processor->REGS[reg_index] / 1000;
+    long long RAM_index = processor->REGS[reg_index] / INT_ARITH_KOEFF;
 
     if (RAM_index < 0 || RAM_index > RAM_SIZE)  return RAM_INDEX_OUT_OF_RANGE;
 
@@ -327,7 +327,7 @@ CMD_STATUS ProcessorPOPM(Processor* processor)
     int reg_index = processor->code_segment[processor->ip + 1] - 1;  // inside code segment we have reg_code (not index), that's why -1
     if (reg_index < 0 || reg_index >= REGISTERS_AMOUNT) return UNKNOWN_REGISTER;
     
-    long long RAM_index = processor->REGS[reg_index] / 1000;
+    long long RAM_index = processor->REGS[reg_index] / INT_ARITH_KOEFF;
 
     if (RAM_index < 0 || RAM_index > RAM_SIZE)  return RAM_INDEX_OUT_OF_RANGE;
 
@@ -347,7 +347,7 @@ CMD_STATUS ProcessorPOPV(Processor* processor)
     int reg_index = processor->code_segment[processor->ip + 1] - 1;  // inside code segment we have reg_code (not index), that's why -1
     if (reg_index < 0 || reg_index >= REGISTERS_AMOUNT) return UNKNOWN_REGISTER;
     
-    long long VRAM_index = processor->REGS[reg_index] / 1000;
+    long long VRAM_index = processor->REGS[reg_index] / INT_ARITH_KOEFF;
 
     if (VRAM_index < 0 || VRAM_index > VRAM_SIZE)  return VRAM_INDEX_OUT_OF_RANGE;
 
@@ -384,7 +384,7 @@ CMD_STATUS ProcessorSQRT(Processor* processor)
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
     ProcessError(processor->stk_err_status);
     
-    stack_elem_t res = (stack_elem_t)(sqrt((double)curr_elem * 1000));
+    stack_elem_t res = (stack_elem_t)(sqrt((double)curr_elem * INT_ARITH_KOEFF));
     processor->ip++;
     PROCESSOR_STACK_PUSH(processor, res);
 

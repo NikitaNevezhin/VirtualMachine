@@ -12,7 +12,7 @@
 
 const char*     GetErrorString    (CMD_STATUS cmd_status);
 
-CMD_STATUS       RunCommand       (Processor* processor);
+CMD_STATUS      RunCommand        (Processor* processor);
 
 int             RunProcessor      (Processor* processor);
 

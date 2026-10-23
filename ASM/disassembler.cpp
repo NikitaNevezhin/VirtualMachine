@@ -43,6 +43,7 @@ const char* GetNameByRegCode(REGISTER_CODE reg_code)
         case BX:            return "BX";
         case CX:            return "CX";
         case DX:            return "DX";
+        case EX:            return "EX";
 
         default:            return NULL;
     }
@@ -109,6 +110,7 @@ void WriteASMcode(const char* input_file, const char* output_file)
         if (command_code <= UNKNOWN || command_code >= CMD_TOTAL_NUMBER)
         {
             PRINT_RED("Could not read from %s:%d: invalid opcode %d\n", input_file, i + 1, command_code);
+            printf("CMD_TOTAL_NUMBER = %d\n", CMD_TOTAL_NUMBER);
             fclose(ASMcode);
             abort();
         }

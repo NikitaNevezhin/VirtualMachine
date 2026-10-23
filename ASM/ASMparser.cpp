@@ -247,7 +247,6 @@ void WriteByteCode(const char* input_file, const char* output_file, bool is_bin)
     // -----------------------------------------------------------------
     // SECOND iteration: assembling ByteCode as now we know all the labels
     // ------------------------------------------------------------------
-
     for (int i = 0; i < ASMcode.lines; i++)
     {
         char* curr_line = ASMcode.indexes[i];
@@ -274,6 +273,8 @@ void WriteByteCode(const char* input_file, const char* output_file, bool is_bin)
             ParseRAMCommand(command_code, curr_line, command_name, ByteCode, i + 1, is_bin);
 
         else 
+        {   
             ParseStandardCommand(command_code, curr_line, command_name, ByteCode, i + 1, is_bin);
+        }
     }
 }

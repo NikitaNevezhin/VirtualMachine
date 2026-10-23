@@ -13,7 +13,7 @@
 #include "../common/commands_info.h"
 #include "../SPU/ProcessorStruct.h"
 
-#define LABELS_AMOUNT 100
+#define LABELS_AMOUNT 200
 #define COMMAND_LEN   20
 #define REG_NAME_LEN  5
 
