@@ -1,5 +1,46 @@
 #include "ASMparser.h"
 
+static const CommandInfo* CMD_HASH_SORTED[CMD_TOTAL_NUMBER] = {}; // for binary search in GetCodeByCommand
+static bool is_CMD_HASH_SORTED_initialized = false;
+
+
+int SortHashComparator(const void* command_info_1, const void* command_info_2)
+{
+    const CommandInfo* cmd_info_1 = *(const CommandInfo* const *)command_info_1;
+    const CommandInfo* cmd_info_2 = *(const CommandInfo* const *)command_info_2;
+
+    if (cmd_info_1->name_hash < cmd_info_2->name_hash)
+        return -1;
+
+    else if (cmd_info_1->name_hash > cmd_info_2->name_hash)
+        return 1;
+
+    else
+        return 0;
+}
+
+int SearchHashComparator(const void* key_hash, const void* command_info)
+{
+    long long key = *(const long long*)key_hash;
+    const CommandInfo* cmd_info = *(const CommandInfo* const *)command_info;
+
+    if (key < cmd_info->name_hash) return -1;
+    if (key > cmd_info->name_hash) return 1;
+    return 0;
+}
+
+int InitializeCmdHashSorted(void)
+{
+    if (is_CMD_HASH_SORTED_initialized)  return 0;
+
+    for (int i = 0; i < CMD_TOTAL_NUMBER; i++)
+        CMD_HASH_SORTED[i] = &OP_TABLE[i];
+
+    qsort(CMD_HASH_SORTED, CMD_TOTAL_NUMBER, sizeof(CommandInfo*), SortHashComparator);
+
+    return 0;
+}
+
 void RemoveComments(char* line) 
 {
     if (line == NULL) return;
@@ -18,15 +59,16 @@ COMMAND_CODE GetCodeByCommand(const char* command_name)
 {
     assert(command_name);
 
+    if (!is_CMD_HASH_SORTED_initialized)
+        InitializeCmdHashSorted();
+
     long long command_name_hash = StrHash(command_name);
+
+    CommandInfo* command_info = *(CommandInfo**)bsearch(&command_name_hash, CMD_HASH_SORTED, CMD_TOTAL_NUMBER, 
+                                                            sizeof(CommandInfo*), SearchHashComparator);
     
-    for (int i = 1; i < CMD_TOTAL_NUMBER; i++)
-    {
-        if (OP_TABLE[i].name && OP_TABLE[i].name_hash == command_name_hash)
-        {
-            if (strcmp(OP_TABLE[i].name, command_name) == 0) return OP_TABLE[i].command_code;
-        }
-    }
+    if (strcmp(command_info->name, command_name) == 0)
+        return command_info->command_code;
 
     return UNKNOWN;
 }
@@ -151,7 +193,7 @@ void ParseStandardCommand(COMMAND_CODE command_code, char* line, char* command_n
         int command_arg = 0;
         if (sscanf(line, "%*s %d", &command_arg) != 1) 
         {
-            PRINT_RED("Could not read from file at line %d: %s requires number argument\n", line_num, command_name);
+            PRINT_RED("Could not read from file at line %d: %s:%d requires number argument\n", line_num, command_name);
             fclose(ByteCode);
             abort();
         }

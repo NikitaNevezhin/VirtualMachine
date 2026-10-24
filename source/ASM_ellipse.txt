@@ -23,7 +23,6 @@
 ; DX - working register
 ; EX - functions register
 
-
 PUSH 20
 POPr CX ; n = SCREEN_WIDTH = SCREEN_HEIGHT
 PUSH 10

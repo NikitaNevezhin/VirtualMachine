@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     const char* ASMcode = argv[1];
     const char* BinCode = argv[2];
     const char* ByteCode = ChangeFileExtension(BinCode, "txt");
-
+    
     WriteByteCode(ASMcode, BinCode, true);    // is_bin = true
     WriteByteCode(ASMcode, ByteCode, false);  // is_bin = false
 
