@@ -18,9 +18,9 @@ CMD_STATUS ProcessorArithm(Processor* processor, COMMAND_CODE command_code)
 {
     assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
-    ProcessError(processor->stk_err_status);
+    ASSERT_STACK_OK(&processor->stk);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
-    ProcessError(processor->stk_err_status);
+    ASSERT_STACK_OK(&processor->stk);
 
     stack_elem_t res = 0;
 
@@ -53,7 +53,7 @@ CMD_STATUS ProcessorOUT(Processor* processor, COMMAND_CODE command_code)
     assert(processor);
     (void)command_code;  // just to escape warning of unused parameter
     printf("Last stack elem is <%lg>\n", (double)PROCESSOR_STACK_POP(processor) / INT_ARITH_KOEFF);
-    ProcessError(processor->stk_err_status);
+    ASSERT_STACK_OK(&processor->stk);
     processor->ip++;
     return EXECUTION_SUCCESS; 
 }
@@ -79,14 +79,14 @@ CMD_STATUS ProcessorRegCommand(Processor* processor, COMMAND_CODE command_code)
         {
             stack_elem_t required_value = processor->REGS[register_code - 1];
             PROCESSOR_STACK_PUSH(processor, required_value);
-            ProcessError(processor->stk_err_status);
+            ASSERT_STACK_OK(&processor->stk);
             break;   
         }
 
         case POPr:
         {
             stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
-            ProcessError(processor->stk_err_status);
+            ASSERT_STACK_OK(&processor->stk);
             processor->REGS[register_code - 1] = curr_elem; 
             break;  
         }
@@ -110,9 +110,9 @@ CMD_STATUS ProcessorConditionalJMP(Processor* processor, COMMAND_CODE command_co
 {
     assert(processor);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
-    ProcessError(processor->stk_err_status);
+    ASSERT_STACK_OK(&processor->stk);
     stack_elem_t prev_elem = PROCESSOR_STACK_POP(processor);
-    ProcessError(processor->stk_err_status);
+    ASSERT_STACK_OK(&processor->stk);
 
     bool condition = false;
 
@@ -184,7 +184,7 @@ CMD_STATUS ProcessorIN(Processor* processor, COMMAND_CODE command_code)
     }
 
     PROCESSOR_STACK_PUSH(processor, input_value * INT_ARITH_KOEFF);
-    ProcessError(processor->stk_err_status);
+    ASSERT_STACK_OK(&processor->stk);
 
     processor->ip++;
     return EXECUTION_SUCCESS;
@@ -200,7 +200,7 @@ CMD_STATUS ProcessorCALL(Processor* processor, COMMAND_CODE command_code)
 
     stack_elem_t ret_position = (stack_elem_t)(processor->ip + 1);
     PROCESSOR_CALL_STK_PUSH(processor, ret_position);
-    ProcessError(processor->call_stk_err_status);
+    ASSERT_STACK_OK(&processor->call_stk);
 
     processor->ip = function_label;
 
@@ -213,7 +213,7 @@ CMD_STATUS ProcessorRET(Processor* processor, COMMAND_CODE command_code)
     (void)command_code;  // just to escape warning of unused parameter
 
     int ret_position = (int)PROCESSOR_CALL_STK_POP(processor);
-    ProcessError(processor->call_stk_err_status);
+    ASSERT_STACK_OK(&processor->call_stk)
     processor->ip = ret_position;
 
     return EXECUTION_SUCCESS;
@@ -238,14 +238,14 @@ CMD_STATUS ProcessorMemCommand(Processor* processor, COMMAND_CODE command_code)
             stack_elem_t RAM_value = 0;     
             RAM_value = processor->RAM[RAM_index];
             PROCESSOR_STACK_PUSH(processor, RAM_value);
-            ProcessError(processor->stk_err_status);
+            ASSERT_STACK_OK(&processor->stk); 
             break;
         }
 
         case POPM:
         {
             stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
-            ProcessError(processor->stk_err_status);
+            ASSERT_STACK_OK(&processor->stk);
             processor->RAM[RAM_index] = curr_elem;
             break;
         }
@@ -263,7 +263,7 @@ CMD_STATUS ProcessorPOPV(Processor* processor, COMMAND_CODE command_code)
     (void)command_code;  // just to escape warning of unused parameter
     // STACK_DUMP(&processor->stk, processor->stk_err_status);
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
-    ProcessError(processor->stk_err_status);
+    ASSERT_STACK_OK(&processor->stk);
 
     int reg_index = processor->code_segment[processor->ip + 1] - 1;  // inside code segment we have reg_code (not index), that's why -1
     if (reg_index < 0 || reg_index >= REGISTERS_AMOUNT) return UNKNOWN_REGISTER;
@@ -307,7 +307,7 @@ CMD_STATUS ProcessorSQRT(Processor* processor, COMMAND_CODE command_code)
     (void)command_code;  // just to escape warning of unused parameter
 
     stack_elem_t curr_elem = PROCESSOR_STACK_POP(processor);
-    ProcessError(processor->stk_err_status);
+    ASSERT_STACK_OK(&processor->stk);
     
     stack_elem_t res = (stack_elem_t)(sqrt((double)curr_elem * INT_ARITH_KOEFF));
     processor->ip++;

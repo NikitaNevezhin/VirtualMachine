@@ -236,7 +236,8 @@ stack_elem_t StackPop(stack_t* stk, STK_ERR_STATUS* err_status)
     ASSERT_STACK_OK(stk);
     
     if (stk->size == 0)
-    {
+    {   
+        stk->size--;
         *err_status = STACK_UNDERFLOW;
         return POIZON;
     }

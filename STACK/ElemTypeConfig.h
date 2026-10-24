@@ -48,8 +48,8 @@
     #define SCANF_STACK_ELEM(variable_address)      scanf("%lld", variable_address)
 
     #define PRINT_DATA_CANARIES(left_canary, right_canary)                                                    \
-                printf("        Left:  %#X (expected %#X)\n", left_canary, DATA_LEFT_CANARY);                 \
-                printf("        Right: %#X (expected %#X)\n", right_canary, DATA_RIGHT_CANARY);               \
+                printf("        Left:  %#llX (expected %#llX)\n", left_canary, DATA_LEFT_CANARY);                 \
+                printf("        Right: %#llX (expected %#llX)\n", right_canary, DATA_RIGHT_CANARY);               \
 
     #define CHECK_LEFT_CANARY(left_canary)      (left_canary == DATA_LEFT_CANARY)
 

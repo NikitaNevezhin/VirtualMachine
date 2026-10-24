@@ -59,7 +59,8 @@ int RunProcessor(Processor* processor)
 
         else
         {
-            printf("%s\n", GetErrorString(command_status));
+            PROCESSOR_DUMP(processor);
+            PRINT_RED("%s\n", GetErrorString(command_status));
             break;
         }
     }
