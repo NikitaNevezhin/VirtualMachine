@@ -78,16 +78,6 @@ int PrintRegisters(Processor* processor)  // ProcessorDump helper function
 int PrintCodeSegment(Processor* processor)
 {
     assert(processor);
-    for (int i = 0; i < processor->code_length; i++)
-    {
-        if (i == processor->ip)
-            PRINT_YELLOW("%3d", i);
-            
-        else
-            printf("%3d", i);
-    }
-
-    printf("\n");
 
     for (int i = 0; i < processor->code_length; i++)
     {   
